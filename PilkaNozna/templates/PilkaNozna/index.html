@@ -1,18 +1,12 @@
-{% if latest_question_list %}
-    <ul>
-    {% for a in latest_question_list %}
-        <li><a href="/PilkaNozna/{{ a.id_ligi}}/">{{ a.nazwa_ligi }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
-{% if latest_question %}
+
+
     <ul>
     {% for a in latest_question %}
-        <li><a href="/PilkaNozna/{{ a.id_klubu}}/">{{ a.nazwa_klubu }}</a></li>
+        <li><a href="{% url 'detail' a.id_klubu %}">{{ a.nazwa_klubu }}</a></li>
     {% endfor %}
     </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+
+
+
+
+
