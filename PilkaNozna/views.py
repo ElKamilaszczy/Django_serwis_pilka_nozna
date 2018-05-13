@@ -8,7 +8,7 @@ def ligi(request):
     latest_question = Liga.objects.order_by('nazwa_ligi')
 
     context = {'latest_question': latest_question}
-    return render(request, 'PilkaNozna/index.html', context)
+    return render(request, 'PilkaNozna/base.html', context)
 
 def detail(request, id_ligi):
     return HttpResponse("You're looking at question %s." % id_ligi)
