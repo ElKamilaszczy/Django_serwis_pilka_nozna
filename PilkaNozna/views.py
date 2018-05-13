@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Liga
+from .models import Liga,Klub
 from .forms import PostForm
 from django.shortcuts import redirect
 
@@ -11,8 +11,10 @@ def ligi(request):
     return render(request, 'PilkaNozna/index.html', context)
 
 def detail(request, id_ligi):
-    latest_question = Liga.objects.get(id_ligi=id_ligi)
-    return HttpResponse("You're looking at question %s." % latest_question)
+    lg = Liga.objects.get(id_ligi=id_ligi)
+    kl = Klub.objects.filter(id_ligi=id_ligi)
+    context = {'lg': lg,'kl':kl}
+    return render(request, 'PilkaNozna/detail.html', context)
 
 
 def add_liga(request):
