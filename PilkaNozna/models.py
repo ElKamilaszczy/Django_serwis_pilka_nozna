@@ -59,7 +59,7 @@ class Mecz(models.Model):
         verbose_name_plural = "Mecz"
 
     def __str__(self):
-        return self.id_meczu
+        return "{}  - {}, kolejka: {}".format(self.id_klubu1, self.id_klubu2, self.kolejka)
 
 class Statystyki_gracza(models.Model):
     id_statystyki = models.AutoField(primary_key = True, default = 0)
