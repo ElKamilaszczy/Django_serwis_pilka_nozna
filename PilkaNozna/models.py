@@ -62,7 +62,7 @@ class Mecz(models.Model):
         return "{}  - {}, kolejka: {}".format(self.id_klubu1, self.id_klubu2, self.kolejka)
 
 class Statystyki_gracza(models.Model):
-    id_statystyki = models.AutoField(primary_key = True, default = 0)
+    id_statystyki = models.AutoField(primary_key = True)
     id_pilkarza = models.ForeignKey(Pilkarz, on_delete = models.CASCADE)
     id_meczu = models.ForeignKey(Mecz, on_delete = models.CASCADE)
     gole = models.IntegerField(default = 0)
@@ -75,4 +75,4 @@ class Statystyki_gracza(models.Model):
         verbose_name_plural = "Statystyki"
 
     def __str__(self):
-        return "{} {}".format(self.id_pilkarza, self.gole)
+        return "{}".format(self.id_pilkarza)
