@@ -46,7 +46,7 @@ class Pilkarz(models.Model):
         verbose_name_plural = "Piłkarz"
 
     def __str__(self):
-        return "{} {}".format(self.imie, self.nazwisko)
+        return "{} {}".format(self.imie,self.nazwisko)
 
 class Mecz(models.Model):
     id_meczu = models.AutoField(primary_key = True)
