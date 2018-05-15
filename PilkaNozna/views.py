@@ -29,9 +29,7 @@ def detail(request, id_ligi):
                 abc[var][b]=a.nazwa_klubu
             if b==2:
                 abc[var][b]=mecz.count()
-            if b==3:
-                for c in mecz:
-                    stat=Statystyki_gracza.objects.filter(id_meczu=c.id_meczu).filter(id_pilkarza=)
+            
 
 
 
