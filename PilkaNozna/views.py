@@ -38,7 +38,8 @@ def gole(id_meczu,id_klubu):
     return tab
 
 
-def detail(request, id_ligi):
+def tabela(request, id_ligi):
+    wsk = 0;
     lg = Liga.objects.get(id_ligi=id_ligi)
     kl = Klub.objects.filter(id_ligi=id_ligi)
     abc = [[0 for j in range(100)] for i in range(100)]
@@ -91,12 +92,22 @@ def detail(request, id_ligi):
 
         var += 1
 
-    np.sort(abc, axis=0)
 
 
-    context = {'lg': lg,'kl':kl,'abc':abc,'mecz':mecz}
+    context = {'lg': lg,'kl':kl,'abc':abc,'wsk':wsk}
     return render(request, 'PilkaNozna/detail.html', context)
 
+def ranking_st(request,id_ligi):
+    wsk=1
+    lg = Liga.objects.get(id_ligi=id_ligi)
+    context = {'wsk': wsk,'lg': lg}
+    return render(request, 'PilkaNozna/detail.html', context)
+
+def kolejki(request,id_ligi):
+    wsk=2
+    lg = Liga.objects.get(id_ligi=id_ligi)
+    context = {'wsk': wsk,'lg': lg}
+    return render(request, 'PilkaNozna/detail.html', context)
 
 def add_liga(request):
     if request.method == "POST":

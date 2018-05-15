@@ -5,13 +5,17 @@
 <br>
   <table style="width:100%" >
   <tr >
-    <td align="center" > <h3>Firstname</h3></td>
-    <td align="center"> <h3>Firstname</h3></td>
-    <td align="center"> <h3>Firstname</h3></td>
+    <td align="center" > <a href="{% url 'tabela' lg.id_ligi %}">
+        <button type="button" class="btn btn-primary btn-md"> <h3>Tabela wyników</h3></button></a> </td>
+    <td align="center"><a href="{% url 'ranking_st' lg.id_ligi %}">
+        <button type="button" class="btn btn-primary btn-md"> <h3>Ranking strzelców</h3></button></a></td>
+    <td align="center"><a href="{% url 'kolejki' lg.id_ligi %}">
+        <button type="button" class="btn btn-primary btn-md"> <h3>Mecze ligowe</h3></button></a></td>
   </tr>
 
 </table>
 <br> <br>
+{% if wsk == 0 %}
 <table class="table table-hover">
     <thead class="thead-dark">
       <tr class="table-dark text-dark">
@@ -46,7 +50,20 @@
 
     </tbody>
   </table>
-{% for a in meczy %}
-{{ a.id_meczu }}
-{% endfor %}
+{%endif%}
+{%if wsk == 1%}
+
+
+RANKING
+
+
+{%endif%}
+
+{%if wsk == 2%}
+
+
+KOLEJKI
+
+
+{%endif%}
 {% endblock %}
