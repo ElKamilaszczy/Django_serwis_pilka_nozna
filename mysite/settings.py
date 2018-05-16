@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'PilkaNozna.apps.PilkanoznaConfig',
+    'sorting_bootstrap'
 ]
 
 MIDDLEWARE = [

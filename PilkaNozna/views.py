@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
 from .forms import PostForm
+from operator import itemgetter
 from django.shortcuts import redirect
 
 def ligi(request):
@@ -100,10 +101,10 @@ def tabela(request, id_ligi):
 def gole_zawodnika(id_pilkarza, id_klubu):
     pilkarz = Pilkarz.objects.filter(id_klubu=id_klubu)
     gole = 0
-    staty = Statystyki_gracza.objects.filter(id_pilkarza = id_pilkarza, gole__gt = 0)
+    staty = Statystyki_gracza.objects.filter(id_pilkarza = id_pilkarza).filter(gole__gt = 0)
     for d in pilkarz:
         for e in staty:
-            if e.id_pilkarza.id_pilkarza == d.id_pilkarza and e.gole > 0:
+            if e.id_pilkarza.id_pilkarza == d.id_pilkarza:
                 gole += e.gole
 
     return gole
@@ -135,15 +136,17 @@ def ranking_st(request, id_ligi):
     context = {'lg': lg, 'kl': kl, 'abc': abc, 'wsk': wsk}
     return render(request, 'PilkaNozna/detail.html', context)
     '''
-    wsk = 1;
+    wsk = 1
     lg = Liga.objects.get(id_ligi=id_ligi)
     kl = Klub.objects.filter(id_ligi=lg)
-    abc = [[0 for j in range(1000)] for i in range(1000)]
+    abc = [[0 for j in range(4)] for i in range(1000)]
     var = 1
-    pilkarz = Pilkarz.objects.filter(id_klubu = 1)
+    pilkarz = Pilkarz.objects.all()
     # MUSI BYC TUTAJ COS O PILKARZU#
     for a in kl:
         for c in pilkarz:
+            if gole_zawodnika(c.id_pilkarza, a.id_klubu) == 0:
+                continue
             for b in range(4):
                 if b == 0:
                     abc[var][b] = var
@@ -154,8 +157,11 @@ def ranking_st(request, id_ligi):
                 if b == 3:
                     abc[var][b] = gole_zawodnika(c.id_pilkarza, a.id_klubu)
             var += 1
-    context = {'lg': lg, 'kl': kl, 'abc': abc, 'wsk': wsk}
+    #Próba posortowania
+    sorted(abc, key=itemgetter(3), reverse=True)
+    context = {'lg': lg, 'pilkarz': pilkarz, 'abc': abc, 'wsk': wsk, 'var': var}
     return render(request, 'PilkaNozna/detail.html', context)
+
 def kolejki(request,id_ligi):
     wsk=2
     lg = Liga.objects.get(id_ligi=id_ligi)

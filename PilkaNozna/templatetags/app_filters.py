@@ -11,3 +11,9 @@ def custom_filter(another_filter_value, tab):
     value_1, value_2 = another_filter_value
 
     return tab[value_1][value_2]
+
+#W celu iteracji tylko okresolna ilosc razy w szablonie
+@register.filter(name='ile_razy')
+def ile_razy(number):
+    return range(1, number)
+

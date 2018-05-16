@@ -1,5 +1,6 @@
 {% extends 'PilkaNozna/base.html' %}
 {% load app_filters %}
+{% load sorting_tags %}
 {% block content %}
 <h1>{{ lg.nazwa_ligi }}</h1>
 <br>
@@ -49,8 +50,7 @@
       </tr>
 
 {% endfor %}
-
-    </tbody>
+</tbody>
   </table>
 {%endif%}
 {%if wsk == 1%}
@@ -63,16 +63,16 @@
           <th>Gole</th>
       </tr>
     </thead>
-    <tbody>
-{% for a in kl %}
+<tbody>
 
+{%for i in var|ile_razy%}
 <tr>
         <td>{{forloop.counter|another_filter:0|custom_filter:abc}}</td>
         <td>{{forloop.counter|another_filter:1|custom_filter:abc}}</td>
         <td>{{forloop.counter|another_filter:2|custom_filter:abc}}</td>
         <td>{{forloop.counter|another_filter:3|custom_filter:abc}}</td>
 </tr>
-
+{%auto_sort adc%}
 {% endfor %}
 
     </tbody>
