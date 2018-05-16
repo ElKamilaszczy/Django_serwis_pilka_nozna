@@ -1,6 +1,7 @@
 {% extends 'PilkaNozna/base.html' %}
 {% load app_filters %}
-#{% load sorting_tags %}#
+
+
 {% block content %}
 <h1>{{ lg.nazwa_ligi }}</h1>
 <br>
@@ -38,7 +39,9 @@
 
 <tr>
         <td>{{forloop.counter|another_filter:0|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:1|custom_filter:abc}}</td>
+
+           <td><a href="{% url 'klub' lg.id_ligi forloop.counter|first_filter:id %}">
+               {{forloop.counter|another_filter:1|custom_filter:abc}}</a></td>
         <td>{{forloop.counter|another_filter:2|custom_filter:abc}}</td>
         <td>{{forloop.counter|another_filter:3|custom_filter:abc}}</td>
         <td>{{forloop.counter|another_filter:4|custom_filter:abc}}</td>

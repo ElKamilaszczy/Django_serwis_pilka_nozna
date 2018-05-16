@@ -44,6 +44,7 @@ def tabela(request, id_ligi):
     lg = Liga.objects.get(id_ligi=id_ligi)
     kl = Klub.objects.filter(id_ligi=id_ligi)
     abc = [[0 for j in range(100)] for i in range(100)]
+    id = [0 for j in range(100)]
     var = 1
     for a in kl:
 
@@ -54,6 +55,7 @@ def tabela(request, id_ligi):
 
             if b==1:
                 abc[var][b]=a.nazwa_klubu
+                id.insert(var,a.id_klubu)
             if b==2:
                 abc[var][b]=mecz.count()
             if b==3:
@@ -95,7 +97,7 @@ def tabela(request, id_ligi):
 
 
 
-    context = {'lg': lg,'kl':kl,'abc':abc,'wsk':wsk}
+    context = {'lg': lg,'kl':kl,'abc':abc,'wsk':wsk,'id':id}
     return render(request, 'PilkaNozna/detail.html', context)
 #Dla wypisywania listy wszystkich strzelców bramek w danej lidze
 def gole_zawodnika(id_pilkarza, id_klubu):
@@ -167,6 +169,9 @@ def kolejki(request,id_ligi):
     lg = Liga.objects.get(id_ligi=id_ligi)
     context = {'wsk': wsk,'lg': lg}
     return render(request, 'PilkaNozna/detail.html', context)
+
+def klub(request,id_ligi,id_klubu):
+    return render(request, 'PilkaNozna/klub.html', {})
 
 def add_liga(request):
     if request.method == "POST":
