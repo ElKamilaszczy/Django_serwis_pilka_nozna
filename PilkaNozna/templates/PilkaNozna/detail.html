@@ -1,8 +1,10 @@
 {% extends 'PilkaNozna/base.html' %}
 {% load app_filters %}
 {% block content %}
-<h1>{{ lg.nazwa_ligi }}</h1><br>
+<h1>{{ lg.nazwa_ligi }}</h1>
 <br>
+<br>
+<h1>Informacje o lidze tutaj jakies wpisywac</h1>
   <table style="width:100%" >
   <tr >
     <td align="center" > <a href="{% url 'tabela' lg.id_ligi %}">
@@ -52,13 +54,31 @@
   </table>
 {%endif%}
 {%if wsk == 1%}
+<table class="table table-hover">
+    <thead class="thead-dark">
+      <tr class="table-dark text-dark">
+        <th>Miejsce</th>
+           <th>Zawodnik</th>
+          <th>Klub</th>
+        <th>Gole</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for a in kl %}
 
+<tr>
+        <td>{{forloop.counter|another_filter:0|custom_filter:abc}}</td>
+        <td>{{forloop.counter|another_filter:1|custom_filter:abc}}</td>
+        <td>{{forloop.counter|another_filter:2|custom_filter:abc}}</td>
+        <td>{{forloop.counter|another_filter:3|custom_filter:abc}}</td>
 
-RANKING
+      </tr>
 
+{% endfor %}
 
+    </tbody>
+  </table>
 {%endif%}
-
 {%if wsk == 2%}
 
 

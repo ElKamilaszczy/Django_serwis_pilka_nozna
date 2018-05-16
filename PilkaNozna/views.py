@@ -96,11 +96,39 @@ def tabela(request, id_ligi):
 
     context = {'lg': lg,'kl':kl,'abc':abc,'wsk':wsk}
     return render(request, 'PilkaNozna/detail.html', context)
+#Dla wypisywania listy wszystkich strzelców bramek w danej lidze
+def gole_zawodnika(id_pilkarza, id_klubu):
+    pilkarz = Pilkarz.objects.filter(id_klubu=id_klubu)
+    gole = 0
+    staty = Statystyki_gracza.objects.filter(id_pilkarza = id_pilkarza)
+    for d in pilkarz:
+        for e in staty:
+            if e.id_pilkarza.id_pilkarza == d.id_pilkarza:
+                gole += e.gole
 
+    return gole
 def ranking_st(request,id_ligi):
-    wsk=1
+    wsk = 1;
     lg = Liga.objects.get(id_ligi=id_ligi)
-    context = {'wsk': wsk,'lg': lg}
+    kl = Klub.objects.filter(id_ligi=id_ligi)
+    abc = [[0 for j in range(100)] for i in range(100)]
+    var = 1
+    for a in kl:
+        pilkarz = Pilkarz.objects.filter(id_klubu=a.id_klubu)
+        for c in pilkarz:
+            for b in range (4):
+                if b==0:
+                    abc[var][b]=var
+                if b==1:
+                    abc[var][b] = (c.imie + ' ' + c.nazwisko)
+                if b==2:
+                    abc[var][b] = a.nazwa_klubu
+                if b==3:
+                    abc[var][b] = gole_zawodnika(c.id_pilkarza, a.id_klubu)
+
+
+            var += 1
+    context = {'lg': lg, 'kl': kl, 'abc': abc, 'wsk': wsk}
     return render(request, 'PilkaNozna/detail.html', context)
 
 def kolejki(request,id_ligi):
