@@ -16,6 +16,7 @@ def custom_filter(another_filter_value, tab):
 @register.filter(name='ile_razy')
 def ile_razy(number):
     return range(1, number)
+
 @register.filter()
 def first_filter(value_1, tab):
     return tab[value_1]

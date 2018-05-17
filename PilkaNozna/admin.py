@@ -13,3 +13,4 @@ admin.site.register(Klub)
 admin.site.register(Pozycja)
 admin.site.register(Mecz)
 admin.site.register(Statystyki_gracza)
+
