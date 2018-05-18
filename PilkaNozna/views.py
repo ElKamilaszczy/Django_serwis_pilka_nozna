@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
 from .forms import PostForm
 from operator import itemgetter
+from django.db.models import Count, Max
 from django.db.models import Max
 from django.shortcuts import redirect
 
@@ -175,7 +176,7 @@ def kolejki(request,id_ligi):
     lg = Liga.objects.get(id_ligi=id_ligi)
     kl = Klub.objects.filter(id_ligi=id_ligi)
     abc = [[0 for j in range(100)] for i in range(100)]
-    id = [0 for j in range(100)]
+    #id = [0 for j in range(100)]
     pom = 0
     var = 1
     '''
@@ -206,12 +207,13 @@ def kolejki(request,id_ligi):
 
                 var += 1
     '''
-    liczba_kolejek = Mecz.objects.all()
-    for d in liczba_kolejek:
+    liczba_kolejek = Mecz.objects.all().aggregate(Max('kolejka'))
+    ilosc = liczba_kolejek['kolejka__max']+1
+    for d in range(1, ilosc):
         for a in kl:
-            mecz = Mecz.objects.filter(id_klubu1=a.id_klubu, kolejka=d.kolejka)
+            mecz = Mecz.objects.filter(id_klubu1=a.id_klubu, kolejka = d)
             for c in mecz:
-                for b in range(6):
+                for b in range(7):
                     if b == 0:
                         temp = gole(c.id_meczu, a.id_klubu)
                         abc[var][b] = temp[4]
@@ -230,9 +232,11 @@ def kolejki(request,id_ligi):
                         temp = gole(c.id_meczu, a.id_klubu)
                         abc[var][b] = temp[3]
                         # id.insert(var, a.id_klubu)
+                    if b == 6:
+                        abc[var][b] = d
 
                 var += 1
-    context = {'lg': lg, 'abc': abc, 'wsk': wsk, 'id': id, 'kolejki': liczba_kolejek, 'var': var}
+    context = {'lg': lg, 'abc': abc, 'wsk': wsk, 'id': id, 'kolejka':ilosc, 'var': var, 'aktualna':d}
     return render(request, 'PilkaNozna/detail.html', context)
 
 def klub(request,id_ligi,id_klubu):

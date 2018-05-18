@@ -81,38 +81,39 @@
     </tbody>
   </table>
 {%endif%}
+<!-- TABELA KOLEJEK !-->
 {%if wsk == 2%}
+<br>
+
+{%for k in aktualna|ile_razy%}
 <table class="table table-hover">
     <thead class="thead-dark">
       <tr class="table-dark text-dark">
           <th>Data spotkania</th>
-          <th>Nazwa klubu1</th>
-          <th>Gole1</th>
+          <th>Nazwa klubu</th>
+          <th>Gole</th>
           <th>:</th>
-          <th>Gole2</th>
-          <th>Nazwa klubu2</th>
+          <th>Gole</th>
+          <th>Nazwa klubu</th>
+          <th>Kolejka</th>
       </tr>
     </thead>
 <tbody>
-
-{%for j in var|ile_razy%}
-
-<tr>
+    {%for j in var|ile_razy%}
+        <tr>
         <td>{{forloop.counter|another_filter:0|custom_filter:abc}}</td>
         <td>{{forloop.counter|another_filter:1|custom_filter:abc}}</td>
         <td>{{forloop.counter|another_filter:2|custom_filter:abc}}</td>
         <td>:</td>
         <td>{{forloop.counter|another_filter:4|custom_filter:abc}}</td>
         <td>{{forloop.counter|another_filter:5|custom_filter:abc}}</td>
-</tr>
+        <td>{{forloop.counter|another_filter:6|custom_filter:abc}}</td>
+        </tr>
+{% endfor %}
+</tbody>
+</table>
 
 {% endfor %}
-
-    </tbody>
-  </table>
-
-KOLEJKI
-
 
 {%endif%}
 {% endblock %}
