@@ -95,9 +95,9 @@
 {%for b in mecze%}
 {%if b.kolejka == a%}
 <tr class="info">
-    <td> <h5 align="right">{{b.data_meczu}}</h5>
-           <h3 align="center" style="display:block;">{{forloop.counter|another_filter:0|custom_filter:abc}} : {{forloop.counter|another_filter:1|custom_filter:abc}}
-           </h3>
+    <td> <h5 align="right">{{b.data_meczu}}</h5><a data-toggle="modal" data-target="#{{b.id_meczu}}">
+           <h4 align="center" style="display:block;">{{forloop.counter|another_filter:0|custom_filter:abc}} : {{forloop.counter|another_filter:1|custom_filter:abc}}
+           </h4></a>
         <h4 style="display:inline-block;float:left">
             {{b.id_klubu1.nazwa_klubu}}</h4>
 
@@ -117,6 +117,27 @@
 </table>
     {%endfor%}
 
+
+
+
+{%for a in mecze%}
+<div class="modal fade" id={{a.id_meczu}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Zamknij</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{a}}</h4>
+      </div>
+      <div class="modal-body">
+        <br><br><br><br><br><br><br><br><br><br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+      </div>
+    </div>
+  </div>
+</div>
+{%endfor%}
 
 
 
