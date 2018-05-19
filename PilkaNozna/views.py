@@ -167,7 +167,24 @@ def ranking_st(request, id_ligi):
 def kolejki(request,id_ligi):
     wsk=2
     lg = Liga.objects.get(id_ligi=id_ligi)
-    context = {'wsk': wsk,'lg': lg}
+    kl = Klub.objects.filter(id_ligi=id_ligi)
+    id = [0 for j in range(100)]
+    var = 0
+    for a in kl:
+        id.insert(var,a.id_klubu)
+        var+=1
+
+    mecze = Mecz.objects.filter(id_klubu1__in=id).order_by('-kolejka','-data_meczu')
+    kol=mecze[0].kolejka
+    var = 1
+    abc = [[0 for j in range(2)] for i in range(1000)]
+    for a in mecze:
+        abc[var][0] = gole(a.id_meczu,a.id_klubu1.id_klubu)[0]
+        abc[var][1] = gole(a.id_meczu, a.id_klubu1.id_klubu)[1]
+        var+=1
+
+
+    context = {'wsk': wsk,'lg': lg,'mecze':mecze,'range':range(kol,0,-1),'abc':abc}
     return render(request, 'PilkaNozna/detail.html', context)
 
 def klub(request,id_ligi,id_klubu):

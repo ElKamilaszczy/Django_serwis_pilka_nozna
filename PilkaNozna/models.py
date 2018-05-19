@@ -75,4 +75,4 @@ class Statystyki_gracza(models.Model):
         verbose_name_plural = "Statystyki"
 
     def __str__(self):
-        return "{}".format(self.id_pilkarza)
+        return "{}, - kolejka: {}".format(self.id_pilkarza,self.id_meczu.kolejka)

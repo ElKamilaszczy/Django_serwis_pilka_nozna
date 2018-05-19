@@ -5,8 +5,8 @@
 {% block content %}
 <h1>{{ lg.nazwa_ligi }}</h1>
 <br>
-<br>
-<h1>Informacje o lidze tutaj jakies wpisywac</h1>
+
+
   <table style="width:100%" >
   <tr >
     <td align="center" > <a href="{% url 'tabela' lg.id_ligi %}">
@@ -82,9 +82,42 @@
   </table>
 {%endif%}
 {%if wsk == 2%}
+{%for a in range%}
+<table class="table table-hover">
+    <thead class="thead-dark">
 
 
-KOLEJKI
+
+    <tr class="table-dark text-dark">
+          <th><h2>Kolejka {{a}}</h2></th>
+<tbody>
+
+{%for b in mecze%}
+{%if b.kolejka == a%}
+<tr class="active">
+    <td> <h5 align="right">{{b.data_meczu}}</h5>
+           <h3 align="center" style="display:block;">{{forloop.counter|another_filter:0|custom_filter:abc}} : {{forloop.counter|another_filter:1|custom_filter:abc}}
+           </h3>
+        <h4 style="display:inline-block;float:left">
+            {{b.id_klubu1.nazwa_klubu}}</h4>
+
+
+            <h4 style="display:inline-block;float:right">   {{b.id_klubu2.nazwa_klubu}}</h4>
+
+    </td>
+
+</tr>
+
+{%endif%}
+{%endfor%}
+    </thead>
+
+
+
+</table>
+    {%endfor%}
+
+
 
 
 {%endif%}
