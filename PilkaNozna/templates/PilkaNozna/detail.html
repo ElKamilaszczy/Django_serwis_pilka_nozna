@@ -94,7 +94,7 @@
 
 {%for b in mecze%}
 {%if b.kolejka == a%}
-<tr class="active">
+<tr class="info">
     <td> <h5 align="right">{{b.data_meczu}}</h5>
            <h3 align="center" style="display:block;">{{forloop.counter|another_filter:0|custom_filter:abc}} : {{forloop.counter|another_filter:1|custom_filter:abc}}
            </h3>
