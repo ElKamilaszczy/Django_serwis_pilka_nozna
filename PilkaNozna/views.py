@@ -173,6 +173,15 @@ def kolejki(request,id_ligi):
     for a in kl:
         id.insert(var,a.id_klubu)
         var+=1
+    var = 0
+    statystyki = Statystyki_gracza.objects.all().order_by('id_pilkarza')
+    gol = [0 for j in range(100)]
+
+    for a in statystyki:
+        if a.gole!=0:
+            for b in range(a.gole):
+                gol[var]=a
+                var+=1
 
     mecze = Mecz.objects.filter(id_klubu1__in=id).order_by('-kolejka','-data_meczu')
     kol=mecze[0].kolejka
@@ -184,7 +193,7 @@ def kolejki(request,id_ligi):
         var+=1
 
 
-    context = {'wsk': wsk,'lg': lg,'mecze':mecze,'range':range(kol,0,-1),'abc':abc}
+    context = {'wsk': wsk,'lg': lg,'mecze':mecze,'range':range(kol,0,-1),'abc':abc,'gol':gol,'statystyki':statystyki}
     return render(request, 'PilkaNozna/detail.html', context)
 
 def klub(request,id_ligi,id_klubu):
