@@ -45,7 +45,7 @@ def tabela(request, id_ligi):
     kl = Klub.objects.filter(id_ligi=id_ligi)
     abc = [[0 for j in range(100)] for i in range(100)]
     id = [0 for j in range(100)]
-    var = 1
+    var = 0
     for a in kl:
 
         mecz = Mecz.objects.filter(id_klubu1=a.id_klubu) | Mecz.objects.filter(id_klubu2=a.id_klubu)
@@ -95,6 +95,17 @@ def tabela(request, id_ligi):
 
         var += 1
 
+    abc = sorted(abc, key=lambda x: x[3], reverse=True)
+    pomocnicza = 0
+    miejsce = 1
+    for x in range(var):
+        if(abc[pomocnicza][3] == abc[pomocnicza+1][3]):
+            abc[pomocnicza][0] = miejsce
+        else:
+             abc[pomocnicza][0] = miejsce
+             miejsce += 1
+
+        pomocnicza += 1
 
 
     context = {'lg': lg,'kl':kl,'abc':abc,'wsk':wsk,'id':id}
@@ -142,7 +153,7 @@ def ranking_st(request, id_ligi):
     lg = Liga.objects.get(id_ligi=id_ligi)
     kl = Klub.objects.filter(id_ligi=lg)
     abc = [[0 for j in range(4)] for i in range(1000)]
-    var = 1
+    var = 0
     pilkarz = Pilkarz.objects.all()
     # MUSI BYC TUTAJ COS O PILKARZU#
     for a in kl:
@@ -160,7 +171,21 @@ def ranking_st(request, id_ligi):
                     abc[var][b] = gole_zawodnika(c.id_pilkarza, a.id_klubu)
             var += 1
     #Próba posortowania
-    sorted(abc, key=itemgetter(3), reverse=True)
+    abc = sorted(abc, key=lambda x: x[3], reverse=True)
+    pomocnicza = 0
+    miejsce = 1
+    for x in range(var):
+        if(abc[pomocnicza][3] == abc[pomocnicza+1][3]):
+            abc[pomocnicza][0] = miejsce
+        else:
+             abc[pomocnicza][0] = miejsce
+             miejsce += 1
+
+        pomocnicza += 1
+
+
+
+
     context = {'lg': lg, 'pilkarz': pilkarz, 'abc': abc, 'wsk': wsk, 'var': var}
     return render(request, 'PilkaNozna/detail.html', context)
 
@@ -191,7 +216,6 @@ def kolejki(request,id_ligi):
         abc[var][0] = gole(a.id_meczu,a.id_klubu1.id_klubu)[0]
         abc[var][1] = gole(a.id_meczu, a.id_klubu1.id_klubu)[1]
         var+=1
-
 
     context = {'wsk': wsk,'lg': lg,'mecze':mecze,'range':range(kol,0,-1),'abc':abc,'gol':gol,'statystyki':statystyki}
     return render(request, 'PilkaNozna/detail.html', context)

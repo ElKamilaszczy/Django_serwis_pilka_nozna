@@ -38,17 +38,17 @@
 {% for a in kl %}
 
 <tr>
-        <td>{{forloop.counter|another_filter:0|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:0|custom_filter:abc}}</td>
 
            <td><a href="{% url 'klub' lg.id_ligi forloop.counter|first_filter:id %}">
-               {{forloop.counter|another_filter:1|custom_filter:abc}}</a></td>
-        <td>{{forloop.counter|another_filter:2|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:3|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:4|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:5|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:6|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:7|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:8|custom_filter:abc}}</td>
+               {{forloop.counter0|another_filter:1|custom_filter:abc}}</a></td>
+        <td>{{forloop.counter0|another_filter:2|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:3|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:4|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:5|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:6|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:7|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:8|custom_filter:abc}}</td>
 
       </tr>
 
@@ -70,10 +70,10 @@
 
 {%for i in var|ile_razy%}
 <tr>
-        <td>{{forloop.counter|another_filter:0|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:1|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:2|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:3|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:0|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:1|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:2|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:3|custom_filter:abc}}</td>
 </tr>
 
 {% endfor %}
@@ -125,12 +125,13 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Zamknij</span></button>
+        <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Zamknij</span>
+        </button>
         <h4 class="modal-title" id="myModalLabel">{{a}}</h4>
             <h5 class="modal-title" id="myModalLabel">{{a.id_klubu1.id_ligi.nazwa_ligi}}</h5>
       </div>
       <div class="modal-body">
-
           <h5 align="right">{{a.data_meczu}}</h5>
           <table class="table table-default" height="auto" style="width:100%;table-layout: fixed;text-align:center">
               <tr>
@@ -211,7 +212,14 @@
                       {%endfor%}
                   </td>
 
-                  <td><center><h3>Asysty</h3></center></td>
+                  <td>
+                      <center>
+                        <h3>
+                        <img src = "https://cdn.iconscout.com/public/images/icon/premium/png-512/helping-hand-gesture-343f7a64de339963-512x512.png"
+                           alt="Asysta" height="35" width="25">
+                        </h3>
+                      </center>
+                  </td>
                   <td>
                       {%for b in statystyki%}
                       {%if b.asysty != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu2.id_klubu%}
@@ -223,60 +231,42 @@
                           {%endif%}
                       {%endfor%}
                   </td>
-
-
-
-
               </tr>
-
-    <tr>
-        <td colspan="3"><h3>Faule</h3></td>
-    </tr>
-     <tr><td>
-                   <table class="table table-default" height="auto" style="width:100%;table-layout: fixed;text-align:center">
-
-         {%for b in statystyki%}
-              {%if b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu1.id_klubu%}
-
+<!-- <td colspan="3"> !-->
               <tr>
-                  <td><h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6></td>
+                <td>
+                      {%for b in statystyki%}
+                      {%if b.faule != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu1.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}
+                         {%if b.faule > 1%}
+                           x {{b.faule}}
+                        {%endif%}
+                      </h6>
+                          {%endif%}
+                      {%endfor%}
+                  </td>
 
-
-             </tr>
-
-{%endif%}
-              {%endfor%}
-
-                   </table>
-     </td>
-     <td></td>
-     <td>
-            <table class="table table-default" height="auto" style="width:100%;table-layout: fixed;text-align:center">
-
-         {%for b in statystyki%}
-              {%if b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu2.id_klubu%}
-
-              <tr>
-                  <td><h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6></td>
-
-
-             </tr>
-
-{%endif%}
-              {%endfor%}
-
-                   </table>
-
-
-
-     </td>
-     </tr></table>
-
-
-
-
-
-
+                  <td>
+                      <center>
+                        <h3>
+                        <img src = "https://cdn0.iconfinder.com/data/icons/thin-sports-fitness/24/thin-0833_referee_whistle-512.png"
+                           alt="Faul" height="35" width="25">
+                        </h3>
+                      </center>
+                  </td>
+                  <td>
+                      {%for b in statystyki%}
+                      {%if b.faule != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu2.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}
+                         {%if b.faule > 1%}
+                          x{{b.faule}}
+                        {%endif%}
+                      </h6>
+                          {%endif%}
+                      {%endfor%}
+                  </td>
+              </tr>
+          </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
@@ -285,8 +275,5 @@
   </div>
 </div>
 {%endfor%}
-
-
-
 {%endif%}
 {% endblock %}
