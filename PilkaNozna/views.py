@@ -3,8 +3,6 @@ from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
 from .forms import PostForm
 from operator import itemgetter
-from django.db.models import Count, Max
-from django.db.models import Max
 from django.shortcuts import redirect
 
 def ligi(request):
@@ -13,16 +11,11 @@ def ligi(request):
     context = {'latest_question': latest_question}
     return render(request, 'PilkaNozna/index.html', context)
 
-'''
-Funkcja zwraca jeden mecz: ilosc goli
-oraz drużyny, które ze sobą grały
-'''
 def gole(id_meczu,id_klubu):
     pilkarz = Pilkarz.objects.filter(id_klubu=id_klubu)
     mecz = Mecz.objects.get(id_meczu=id_meczu)
     gole = 0
     gole_p = 0
-
     staty = Statystyki_gracza.objects.filter(id_meczu=id_meczu)
     if id_klubu == mecz.id_klubu1.id_klubu:
         przeciwnik = mecz.id_klubu2.id_klubu
@@ -43,10 +36,8 @@ def gole(id_meczu,id_klubu):
     tab = []
     tab.insert(0,gole)
     tab.insert(1,gole_p)
-    tab.insert(2, mecz.id_klubu1.nazwa_klubu)
-    tab.insert(3, mecz.id_klubu2.nazwa_klubu)
-    tab.insert(4, mecz.data_meczu)
     return tab
+
 
 def tabela(request, id_ligi):
     wsk = 0;
@@ -61,14 +52,16 @@ def tabela(request, id_ligi):
         for b in range (9):
             if b==0:
                 abc[var][b]=var
+
             if b==1:
                 abc[var][b]=a.nazwa_klubu
-                #id.insert(var,a.id_klubu)
+                id.insert(var,a.id_klubu)
             if b==2:
                 abc[var][b]=mecz.count()
             if b==3:
                 for c in mecz:
                     temp = gole(c.id_meczu,a.id_klubu)
+
                     if temp[0] > temp[1]:
 
                         abc[var][b] += 3
@@ -158,7 +151,7 @@ def ranking_st(request, id_ligi):
                 continue
             for b in range(4):
                 if b == 0:
-                    abc[var][b] = a.id_klubu
+                    abc[var][b] = var
                 if b == 1:
                     abc[var][b] = (c.imie + ' ' + c.nazwisko)
                 if b == 2:
@@ -175,68 +168,32 @@ def kolejki(request,id_ligi):
     wsk=2
     lg = Liga.objects.get(id_ligi=id_ligi)
     kl = Klub.objects.filter(id_ligi=id_ligi)
-    abc = [[0 for j in range(100)] for i in range(100)]
-    #id = [0 for j in range(100)]
-    pom = 0
-    var = 1
-    '''
-    liczba_kolejek = Mecz.objects.all()
+    id = [0 for j in range(100)]
+    var = 0
     for a in kl:
-        for d in liczba_kolejek:
-            mecz = Mecz.objects.filter(id_klubu1=a.id_klubu, kolejka = d.kolejka)
-            for c in mecz:
-                for b in range(6):
-                    if b == 0:
-                        temp = gole(c.id_meczu,a.id_klubu)
-                        abc[var][b] = temp[4]
-                        #id.insert(var, a.id_klubu)
-                    if b == 1:
-                        temp = gole(c.id_meczu,a.id_klubu)
-                        abc[var][b] = temp[2]
-                        #id.insert(var, a.id_klubu)
-                    if b == 2:
-                        temp = gole(c.id_meczu,a.id_klubu)
-                        abc[var][b] = temp[0]
-                    if b == 4:
-                        temp = gole(c.id_meczu, a.id_klubu)
-                        abc[var][b] = temp[1]
-                    if b == 5:
-                        temp = gole(c.id_meczu,a.id_klubu)
-                        abc[var][b] = temp[3]
-                        #id.insert(var, a.id_klubu)
+        id.insert(var,a.id_klubu)
+        var+=1
+    var = 0
+    statystyki = Statystyki_gracza.objects.all().order_by('id_pilkarza')
+    gol = [0 for j in range(100)]
 
-                var += 1
-    '''
-    liczba_kolejek = Mecz.objects.all().aggregate(Max('kolejka'))
-    ilosc = liczba_kolejek['kolejka__max']+1
-    for d in range(1, ilosc):
-        for a in kl:
-            mecz = Mecz.objects.filter(id_klubu1=a.id_klubu, kolejka = d)
-            for c in mecz:
-                for b in range(7):
-                    if b == 0:
-                        temp = gole(c.id_meczu, a.id_klubu)
-                        abc[var][b] = temp[4]
-                        # id.insert(var, a.id_klubu)
-                    if b == 1:
-                        temp = gole(c.id_meczu, a.id_klubu)
-                        abc[var][b] = temp[2]
-                        # id.insert(var, a.id_klubu)
-                    if b == 2:
-                        temp = gole(c.id_meczu, a.id_klubu)
-                        abc[var][b] = temp[0]
-                    if b == 4:
-                        temp = gole(c.id_meczu, a.id_klubu)
-                        abc[var][b] = temp[1]
-                    if b == 5:
-                        temp = gole(c.id_meczu, a.id_klubu)
-                        abc[var][b] = temp[3]
-                        # id.insert(var, a.id_klubu)
-                    if b == 6:
-                        abc[var][b] = d
+    for a in statystyki:
+        if a.gole!=0:
+            for b in range(a.gole):
+                gol[var]=a
+                var+=1
 
-                var += 1
-    context = {'lg': lg, 'abc': abc, 'wsk': wsk, 'id': id, 'kolejka':ilosc, 'var': var, 'aktualna':d}
+    mecze = Mecz.objects.filter(id_klubu1__in=id).order_by('-kolejka','-data_meczu')
+    kol=mecze[0].kolejka
+    var = 1
+    abc = [[0 for j in range(2)] for i in range(1000)]
+    for a in mecze:
+        abc[var][0] = gole(a.id_meczu,a.id_klubu1.id_klubu)[0]
+        abc[var][1] = gole(a.id_meczu, a.id_klubu1.id_klubu)[1]
+        var+=1
+
+
+    context = {'wsk': wsk,'lg': lg,'mecze':mecze,'range':range(kol,0,-1),'abc':abc,'gol':gol,'statystyki':statystyki}
     return render(request, 'PilkaNozna/detail.html', context)
 
 def klub(request,id_ligi,id_klubu):

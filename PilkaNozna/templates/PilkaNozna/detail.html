@@ -5,8 +5,8 @@
 {% block content %}
 <h1>{{ lg.nazwa_ligi }}</h1>
 <br>
-<br>
-<h1>Informacje o lidze tutaj jakies wpisywac</h1>
+
+
   <table style="width:100%" >
   <tr >
     <td align="center" > <a href="{% url 'tabela' lg.id_ligi %}">
@@ -81,39 +81,212 @@
     </tbody>
   </table>
 {%endif%}
-<!-- TABELA KOLEJEK !-->
 {%if wsk == 2%}
-<br>
-
-{%for k in aktualna|ile_razy%}
+{%for a in range%}
 <table class="table table-hover">
     <thead class="thead-dark">
-      <tr class="table-dark text-dark">
-          <th>Data spotkania</th>
-          <th>Nazwa klubu</th>
-          <th>Gole</th>
-          <th>:</th>
-          <th>Gole</th>
-          <th>Nazwa klubu</th>
-          <th>Kolejka</th>
-      </tr>
-    </thead>
-<tbody>
-    {%for j in var|ile_razy%}
-        <tr>
-        <td>{{forloop.counter|another_filter:0|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:1|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:2|custom_filter:abc}}</td>
-        <td>:</td>
-        <td>{{forloop.counter|another_filter:4|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:5|custom_filter:abc}}</td>
-        <td>{{forloop.counter|another_filter:6|custom_filter:abc}}</td>
-        </tr>
-{% endfor %}
-</tbody>
-</table>
 
-{% endfor %}
+
+
+    <tr class="table-dark text-dark">
+          <th><h2>Kolejka {{a}}</h2></th>
+<tbody>
+
+{%for b in mecze%}
+{%if b.kolejka == a%}
+<tr class="info">
+    <td> <h5 align="right">{{b.data_meczu}}</h5><a data-toggle="modal" data-target="#{{b.id_meczu}}">
+           <h4 align="center" style="display:block;">{{forloop.counter|another_filter:0|custom_filter:abc}} : {{forloop.counter|another_filter:1|custom_filter:abc}}
+           </h4></a>
+        <h4 style="display:inline-block;float:left">
+            {{b.id_klubu1.nazwa_klubu}}</h4>
+
+
+            <h4 style="display:inline-block;float:right">   {{b.id_klubu2.nazwa_klubu}}</h4>
+
+    </td>
+
+</tr>
+
+{%endif%}
+{%endfor%}
+    </thead>
+
+
+
+</table>
+    {%endfor%}
+
+
+
+
+{%for a in mecze%}
+<div class="modal fade" id={{a.id_meczu}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Zamknij</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{a}}</h4>
+            <h5 class="modal-title" id="myModalLabel">{{a.id_klubu1.id_ligi.nazwa_ligi}}</h5>
+      </div>
+      <div class="modal-body">
+
+          <h5 align="right">{{a.data_meczu}}</h5>
+          <table class="table table-default" height="auto" style="width:100%;table-layout: fixed;text-align:center">
+              <tr>
+                  <td><h3>{{a.id_klubu1.nazwa_klubu}}</h3></td>
+                  <td><h1>{{forloop.counter|another_filter:0|custom_filter:abc}} : {{forloop.counter|another_filter:1|custom_filter:abc}}</h1></td>
+                  <td><h3>{{a.id_klubu2.nazwa_klubu}}</h3></td>
+              </tr>
+               <tr>
+                  <td>
+                      {%for b in gol%}
+                      {%if b.gole != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu1.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
+                      {%endif%}
+                      {%endfor%}
+                  </td>
+                  <td><img src="https://ssl.gstatic.com/onebox/sports/soccer_timeline/soccer-ball-retina.png"></td>
+                  <td>{%for b in gol%}
+                      {%if b.gole != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu2.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
+                      {%endif%}
+                      {%endfor%}</td>
+              </tr>
+
+                <tr>
+                  <td>
+                      {%for b in statystyki%}
+                      {%if b.zolta != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu1.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
+                      {%if b.zolta == 2%}
+                                            <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
+                        {%endif%}
+                      {%endif%}
+                      {%endfor%}
+                  </td>
+                    <td><center><div style="background-color:yellow;height:35px;width:25px;margin-top:8px"></div></center></td>
+                  <td>
+                      {%for b in statystyki%}
+                      {%if b.zolta != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu2.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
+                      {%if b.zolta == 2%}
+                                            <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
+                        {%endif%}
+                      {%endif%}
+                      {%endfor%}
+                  </td>
+              </tr>
+
+              <tr>
+                  <td>
+                      {%for b in statystyki%}
+                      {%if b.czerwona != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu1.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
+
+                      {%endif%}
+                      {%endfor%}
+                  </td>
+                    <td><center><div style="background-color:red;height:35px;width:25px;margin-top:8px"></div></center></td>
+                  <td>
+                      {%for b in statystyki%}
+                      {%if b.czerwona != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu2.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
+
+                      {%endif%}
+                      {%endfor%}
+                  </td>
+              </tr>
+
+              <tr>
+                 <td>
+                      {%for b in statystyki%}
+                      {%if b.asysty != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu1.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}
+                         {%if b.asysty > 1%}
+                                            x {{b.asysty}}
+                        {%endif%}
+                      </h6>
+                          {%endif%}
+                      {%endfor%}
+                  </td>
+
+                  <td><center><h3>Asysty</h3></center></td>
+                  <td>
+                      {%for b in statystyki%}
+                      {%if b.asysty != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu2.id_klubu%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}
+                         {%if b.asysty > 1%}
+                          x{{b.asysty}}
+                        {%endif%}
+                      </h6>
+                          {%endif%}
+                      {%endfor%}
+                  </td>
+
+
+
+
+              </tr>
+
+    <tr>
+        <td colspan="3"><h3>Faule</h3></td>
+    </tr>
+     <tr><td>
+                   <table class="table table-default" height="auto" style="width:100%;table-layout: fixed;text-align:center">
+
+         {%for b in statystyki%}
+              {%if b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu1.id_klubu%}
+
+              <tr>
+                  <td><h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6></td>
+
+
+             </tr>
+
+{%endif%}
+              {%endfor%}
+
+                   </table>
+     </td>
+     <td></td>
+     <td>
+            <table class="table table-default" height="auto" style="width:100%;table-layout: fixed;text-align:center">
+
+         {%for b in statystyki%}
+              {%if b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu2.id_klubu%}
+
+              <tr>
+                  <td><h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6></td>
+
+
+             </tr>
+
+{%endif%}
+              {%endfor%}
+
+                   </table>
+
+
+
+     </td>
+     </tr></table>
+
+
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+      </div>
+    </div>
+  </div>
+</div>
+{%endfor%}
+
+
 
 {%endif%}
 {% endblock %}
