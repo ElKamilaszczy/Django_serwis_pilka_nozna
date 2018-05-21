@@ -1,7 +1,18 @@
 {% extends 'PilkaNozna/base.html' %}
+{% load app_filters %}
+{% block content %}
+<center><h1>{{kl.nazwa_klubu}}</h1></center>
+<br>
+<br>
+<div id = "{{kl.nazwa_klubu}}">
+{%if kl.nazwa_klubu == "FC Barcelona"%}
+<img src="http://pngimg.com/uploads/fcb_logo/fcb_logo_PNG25.png" width="100" height="100" />
+{%endif%}
+{%if kl.nazwa_klubu == "Real Madryt"%}
+<img src="https://vignette.wikia.nocookie.net/juventus/images/0/0c/Logo_real_madryt.png/revision/latest?cb=20080830060603&path-prefix=pl" width="100" height="100" />
+{%endif%}
 
- {% block content %}
-
+</div>
 
 
 

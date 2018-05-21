@@ -46,6 +46,7 @@ def tabela(request, id_ligi):
     abc = [[0 for j in range(100)] for i in range(100)]
     id = [0 for j in range(100)]
     var = 0
+    pomoc = 0
     for a in kl:
 
         mecz = Mecz.objects.filter(id_klubu1=a.id_klubu) | Mecz.objects.filter(id_klubu2=a.id_klubu)
@@ -54,8 +55,9 @@ def tabela(request, id_ligi):
                 abc[var][b]=var
 
             if b==1:
-                abc[var][b]=a.nazwa_klubu
-                id.insert(var,a.id_klubu)
+                abc[var][b]=a
+                #id.insert(var,a.id_klubu)
+
             if b==2:
                 abc[var][b]=mecz.count()
             if b==3:
@@ -91,25 +93,26 @@ def tabela(request, id_ligi):
                 for c in mecz:
                     temp = gole(c.id_meczu,a.id_klubu)
                     abc[var][b] += temp[1]
-
+        id.insert(pomoc, a.id_klubu)
+        pomoc += 1
 
         var += 1
 
     abc = sorted(abc, key=lambda x: x[3], reverse=True)
     pomocnicza = 0
     miejsce = 1
-    for x in range(var):
+    for a in kl:
         if(abc[pomocnicza][3] == abc[pomocnicza+1][3]):
             abc[pomocnicza][0] = miejsce
+
         else:
-             abc[pomocnicza][0] = miejsce
-             miejsce += 1
+            abc[pomocnicza][0] = miejsce
+            miejsce += 1
 
         pomocnicza += 1
-
-
-    context = {'lg': lg,'kl':kl,'abc':abc,'wsk':wsk,'id':id}
+    context = {'lg': lg, 'kl': kl, 'abc': abc, 'wsk': wsk, 'id': id}
     return render(request, 'PilkaNozna/detail.html', context)
+
 #Dla wypisywania listy wszystkich strzelców bramek w danej lidze
 def gole_zawodnika(id_pilkarza, id_klubu):
     pilkarz = Pilkarz.objects.filter(id_klubu=id_klubu)
@@ -183,9 +186,6 @@ def ranking_st(request, id_ligi):
 
         pomocnicza += 1
 
-
-
-
     context = {'lg': lg, 'pilkarz': pilkarz, 'abc': abc, 'wsk': wsk, 'var': var}
     return render(request, 'PilkaNozna/detail.html', context)
 
@@ -221,7 +221,10 @@ def kolejki(request,id_ligi):
     return render(request, 'PilkaNozna/detail.html', context)
 
 def klub(request,id_ligi,id_klubu):
-    return render(request, 'PilkaNozna/klub.html', {})
+    lg = Liga.objects.get(id_ligi = id_ligi)
+    kl = Klub.objects.get(id_klubu = id_klubu, id_ligi = lg)
+    context = {'lg': lg, 'kl':kl}
+    return render(request, 'PilkaNozna/klub.html', context)
 
 def add_liga(request):
     if request.method == "POST":

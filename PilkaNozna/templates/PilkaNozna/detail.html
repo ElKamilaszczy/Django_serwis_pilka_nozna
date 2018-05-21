@@ -40,7 +40,7 @@
 <tr>
         <td>{{forloop.counter0|another_filter:0|custom_filter:abc}}</td>
 
-           <td><a href="{% url 'klub' lg.id_ligi forloop.counter|first_filter:id %}">
+        <td><a href="{% url 'klub' lg.id_ligi forloop.counter0|first_filter:id %}">
                {{forloop.counter0|another_filter:1|custom_filter:abc}}</a></td>
         <td>{{forloop.counter0|another_filter:2|custom_filter:abc}}</td>
         <td>{{forloop.counter0|another_filter:3|custom_filter:abc}}</td>
