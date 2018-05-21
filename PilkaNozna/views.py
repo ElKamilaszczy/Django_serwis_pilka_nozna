@@ -50,12 +50,12 @@ def tabela(request, id_ligi):
     for a in kl:
 
         mecz = Mecz.objects.filter(id_klubu1=a.id_klubu) | Mecz.objects.filter(id_klubu2=a.id_klubu)
-        for b in range (9):
+        for b in range (10):
             if b==0:
                 abc[var][b]=var
 
             if b==1:
-                abc[var][b]=a
+                abc[var][b]=a.nazwa_klubu
                 #id.insert(var,a.id_klubu)
 
             if b==2:
@@ -93,6 +93,9 @@ def tabela(request, id_ligi):
                 for c in mecz:
                     temp = gole(c.id_meczu,a.id_klubu)
                     abc[var][b] += temp[1]
+            if b==9:
+                abc[var][b] = a.id_klubu
+
         id.insert(pomoc, a.id_klubu)
         pomoc += 1
 
