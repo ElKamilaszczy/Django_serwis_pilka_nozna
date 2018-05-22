@@ -46,7 +46,7 @@ def tabela(request, id_ligi):
     abc = [[0 for j in range(100)] for i in range(100)]
     id = [0 for j in range(100)]
     var = 0
-    pomoc = 0
+    #pomoc = 0
     for a in kl:
 
         mecz = Mecz.objects.filter(id_klubu1=a.id_klubu) | Mecz.objects.filter(id_klubu2=a.id_klubu)
@@ -95,9 +95,8 @@ def tabela(request, id_ligi):
                     abc[var][b] += temp[1]
             if b==9:
                 abc[var][b] = a.id_klubu
-
-        id.insert(pomoc, a.id_klubu)
-        pomoc += 1
+        #id.insert(pomoc, a.id_klubu)
+        #pomoc += 1
 
         var += 1
 
@@ -105,7 +104,7 @@ def tabela(request, id_ligi):
     pomocnicza = 0
     miejsce = 1
     for a in kl:
-        if(abc[pomocnicza][3] == abc[pomocnicza+1][3]):
+        if(abc[pomocnicza][3] == abc[pomocnicza+1][3]) and (abc[pomocnicza][7]-abc[pomocnicza][8]) == (abc[pomocnicza+1][7] - abc[pomocnicza+1][8]):
             abc[pomocnicza][0] = miejsce
 
         else:
@@ -225,8 +224,62 @@ def kolejki(request,id_ligi):
 
 def klub(request,id_ligi,id_klubu):
     lg = Liga.objects.get(id_ligi = id_ligi)
-    kl = Klub.objects.get(id_klubu = id_klubu, id_ligi = lg)
-    context = {'lg': lg, 'kl':kl}
+    kl = Klub.objects.filter(id_ligi = lg, id_klubu = id_klubu)
+    abc = [[0 for j in range(100)] for i in range(100)]
+    id = [0 for j in range(100)]
+    var = 0
+    #Miejsce na ogólne statystyki#
+    for a in kl:
+        mecz = Mecz.objects.filter(id_klubu1=a.id_klubu) | Mecz.objects.filter(id_klubu2=a.id_klubu)
+        for b in range(10):
+            if b == 0:
+                abc[var][b] = var
+            if b == 1:
+                abc[var][b] = a.nazwa_klubu
+            if b == 2:
+                abc[var][b] = mecz.count()
+            if b == 3:
+                for c in mecz:
+                    temp = gole(c.id_meczu, a.id_klubu)
+
+                    if temp[0] > temp[1]:
+                        abc[var][b] += 3
+                    if temp[0] == temp[1]:
+                        abc[var][b] += 1
+
+            if b == 4:
+                for c in mecz:
+                    temp = gole(c.id_meczu, a.id_klubu)
+                    if temp[0] > temp[1]:
+                        abc[var][b] += 1
+            if b == 5:
+                for c in mecz:
+                    temp = gole(c.id_meczu, a.id_klubu)
+                    if temp[0] < temp[1]:
+                        abc[var][b] += 1
+            if b == 6:
+                for c in mecz:
+                    temp = gole(c.id_meczu, a.id_klubu)
+                    if temp[0] == temp[1]:
+                        abc[var][b] += 1
+            if b == 7:
+                for c in mecz:
+                    temp = gole(c.id_meczu, a.id_klubu)
+                    abc[var][b] += temp[0]
+            if b == 8:
+                for c in mecz:
+                    temp = gole(c.id_meczu, a.id_klubu)
+                    abc[var][b] += temp[1]
+            if b == 9:
+                abc[var][b] = a.id_klubu
+        var += 1
+    abc = sorted(abc, key=lambda x: x[3], reverse=True)
+    pomocnicza = 0
+    miejsce = 1
+    #Tutaj ogólne statystyki dla poszczególnych graczy#
+
+
+    context = {'lg': lg, 'kl':kl, 'abc':abc}
     return render(request, 'PilkaNozna/klub.html', context)
 
 def add_liga(request):

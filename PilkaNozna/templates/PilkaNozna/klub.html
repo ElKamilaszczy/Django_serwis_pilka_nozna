@@ -5,12 +5,48 @@
 <br>
 <br>
 <div id = "{{kl.nazwa_klubu}}">
-{%if kl.nazwa_klubu == "FC Barcelona"%}
-<img src="http://pngimg.com/uploads/fcb_logo/fcb_logo_PNG25.png" width="100" height="100" />
-{%endif%}
-{%if kl.nazwa_klubu == "Real Madryt"%}
-<img src="https://vignette.wikia.nocookie.net/juventus/images/0/0c/Logo_real_madryt.png/revision/latest?cb=20080830060603&path-prefix=pl" width="100" height="100" />
-{%endif%}
+<table class="table table-hover">
+    <thead class="thead-dark">
+      <tr class="table-dark text-dark">
+        <th>Miejsce</th>
+          <th>Klub</th>
+          <th>M</th>
+        <th>PKT</th>
+        <th>Z</th>
+        <th>P</th>
+        <th>R</th>
+          <th>BZ</th>
+            <th>BS</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for a in kl %}
+
+<tr>
+    <td>{{forloop.counter0|another_filter:0|custom_filter:abc}}</td>
+    <td>{{forloop.counter0|another_filter:1|custom_filter:abc}}</td>
+    <td>{{forloop.counter0|another_filter:2|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:3|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:4|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:5|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:6|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:7|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:8|custom_filter:abc}}</td>
+
+      </tr>
+
+{% endfor %}
+</tbody>
+  </table>
+
+</div>
+
+<div>
+OGÓLNE STATYSTYKI POSZCZEGÓLNYCH PIŁKARZY WZÓR
+<center>IMIE I NAZWISKO PILKARZA</center>
+GOLE, ASYSYTY, FAULE, KARTKI ZOLTE, KARTKI CZERWONE
+
+
 
 </div>
 
