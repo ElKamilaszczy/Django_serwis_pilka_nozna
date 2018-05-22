@@ -112,6 +112,7 @@ def tabela(request, id_ligi):
             miejsce += 1
 
         pomocnicza += 1
+    request.session['tablica_wynikow'] = abc
     context = {'lg': lg, 'kl': kl, 'abc': abc, 'wsk': wsk, 'id': id}
     return render(request, 'PilkaNozna/detail.html', context)
 
@@ -277,9 +278,35 @@ def klub(request,id_ligi,id_klubu):
     pomocnicza = 0
     miejsce = 1
     #Tutaj ogólne statystyki dla poszczególnych graczy#
-
-
-    context = {'lg': lg, 'kl':kl, 'abc':abc}
+    pilkarz_staty = abc = [[0 for j in range(100)] for i in range(100)]
+    pilkarz = Pilkarz.objects.filter(id_klubu = id_klubu)
+    var = 0
+    for p in pilkarz:
+        staty = Statystyki_gracza.objects.filter(id_pilkarza = p.id_pilkarza)
+        for b in range(8):
+            if b == 0:
+                pilkarz_staty[var][b] = p.id_pilkarza
+            if b == 1:
+                pilkarz_staty[var][b] = (p.imie + ' ' + p.nazwisko)
+            if b == 2:
+                for s in staty:
+                        pilkarz_staty[var][b] += s.gole
+            if b == 3:
+                for s in staty:
+                        pilkarz_staty[var][b] += s.asysty
+            if b == 4:
+                for s in staty:
+                        pilkarz_staty[var][b] += s.faule
+            if b == 5:
+                for s in staty:
+                        pilkarz_staty[var][b] += s.zolta
+            if b == 6:
+                for s in staty:
+                        pilkarz_staty[var][b] += s.czerwona
+            if b == 7:
+                pilkarz_staty[var][b] = p.id_pozycji.nazwa_pozycji
+        var += 1
+    context = {'lg': lg, 'kl':kl, 'abc':abc, 'a':a, 'pilkarz_staty': pilkarz_staty, 'pilkarz': pilkarz}
     return render(request, 'PilkaNozna/klub.html', context)
 
 def add_liga(request):

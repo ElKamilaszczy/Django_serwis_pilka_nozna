@@ -1,7 +1,7 @@
 {% extends 'PilkaNozna/base.html' %}
 {% load app_filters %}
 {% block content %}
-<center><h1>{{kl.nazwa_klubu}}</h1></center>
+<center><h1>Statystyki klubu: {{a.nazwa_klubu}}</h1></center>
 <br>
 <br>
 <div id = "{{kl.nazwa_klubu}}">
@@ -16,16 +16,16 @@
         <th>P</th>
         <th>R</th>
           <th>BZ</th>
-            <th>BS</th>
+          <th>BS</th>
       </tr>
     </thead>
     <tbody>
 {% for a in kl %}
 
 <tr>
-    <td>{{forloop.counter0|another_filter:0|custom_filter:abc}}</td>
-    <td>{{forloop.counter0|another_filter:1|custom_filter:abc}}</td>
-    <td>{{forloop.counter0|another_filter:2|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:0|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:1|custom_filter:abc}}</td>
+        <td>{{forloop.counter0|another_filter:2|custom_filter:abc}}</td>
         <td>{{forloop.counter0|another_filter:3|custom_filter:abc}}</td>
         <td>{{forloop.counter0|another_filter:4|custom_filter:abc}}</td>
         <td>{{forloop.counter0|another_filter:5|custom_filter:abc}}</td>
@@ -33,7 +33,7 @@
         <td>{{forloop.counter0|another_filter:7|custom_filter:abc}}</td>
         <td>{{forloop.counter0|another_filter:8|custom_filter:abc}}</td>
 
-      </tr>
+</tr>
 
 {% endfor %}
 </tbody>
@@ -41,16 +41,39 @@
 
 </div>
 
-<div>
-OGÓLNE STATYSTYKI POSZCZEGÓLNYCH PIŁKARZY WZÓR
-<center>IMIE I NAZWISKO PILKARZA</center>
-GOLE, ASYSYTY, FAULE, KARTKI ZOLTE, KARTKI CZERWONE
+<div id = "lista_zawodnikow">
+    <table class="table table-hover">
+    <thead class="thead-dark">
+      <tr class="table-dark text-dark">
+        <th>Imie i nazwisko</th>
+          <th>Gole</th>
+          <th>Asysty</th>
+        <th>Faule</th>
+        <th>LŻ</th>
+        <th>LC</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for p in pilkarz %}
+
+<tr>
+        <td>{{forloop.counter0|another_filter:1|custom_filter:pilkarz_staty}}</td>
+        <td>{{forloop.counter0|another_filter:2|custom_filter:pilkarz_staty}}</td>
+        <td>{{forloop.counter0|another_filter:3|custom_filter:pilkarz_staty}}</td>
+        <td>{{forloop.counter0|another_filter:4|custom_filter:pilkarz_staty}}</td>
+        <td>{{forloop.counter0|another_filter:5|custom_filter:pilkarz_staty}}</td>
+        <td>{{forloop.counter0|another_filter:6|custom_filter:pilkarz_staty}}</td>
+        <td>{{forloop.counter0|another_filter:7|custom_filter:pilkarz_staty}}</td>
+
+</tr>
+
+{% endfor %}
+</tbody>
+  </table>
 
 
 
 </div>
-
-
 
 
 {% endblock %}
