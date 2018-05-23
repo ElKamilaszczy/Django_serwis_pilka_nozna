@@ -2,6 +2,7 @@
 Kamil Jarmoc, Jan Kucharski
 
 '''
+from datetime import datetime
 from django.db import models
 
 # Create your models here.
@@ -47,6 +48,8 @@ class Pilkarz(models.Model):
 
     def __str__(self):
         return "{} {}".format(self.imie,self.nazwisko)
+    def wiek_pilkarza(self):
+        return datetime.now().year - self.data_urodzenia.year
 
 class Mecz(models.Model):
     id_meczu = models.AutoField(primary_key = True)
