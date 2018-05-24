@@ -128,33 +128,6 @@ def gole_zawodnika(id_pilkarza, id_klubu):
 
     return gole
 def ranking_st(request, id_ligi):
-    '''
-    wsk = 1;
-    lg = Liga.objects.get(id_ligi=id_ligi)
-    kl = Klub.objects.filter(id_ligi=id_ligi)
-    abc = [[0 for j in range(100)] for i in range(100)]
-    var = 1
-    pilkarz = Pilkarz.objects
-    #MUSI BYC TUTAJ COS O PILKARZU#
-    for a in kl:
-        pilkarz = Pilkarz.objects.filter(id_klubu=a.id_klubu)
-        for c in pilkarz:
-            for b in range (4):
-                if b==0:
-                    abc[var][b]=var
-                if b==1:
-                    abc[var][b] = (c.imie + ' ' + c.nazwisko)
-                if b==2:
-                    abc[var][b] = a.nazwa_klubu
-                if b==3:
-                    abc[var][b] = gole_zawodnika(c.id_pilkarza, c.id_klubu)
-
-
-                    var += 1
-                    continue
-    context = {'lg': lg, 'kl': kl, 'abc': abc, 'wsk': wsk}
-    return render(request, 'PilkaNozna/detail.html', context)
-    '''
     wsk = 1
     lg = Liga.objects.get(id_ligi=id_ligi)
     kl = Klub.objects.filter(id_ligi=lg)
@@ -226,13 +199,14 @@ def kolejki(request,id_ligi):
 def klub(request,id_ligi,id_klubu):
     lg = Liga.objects.get(id_ligi = id_ligi)
     kl = Klub.objects.filter(id_ligi = lg, id_klubu = id_klubu)
+    pilkarz1 = Pilkarz.objects.filter(id_klubu = id_klubu)
     abc = [[0 for j in range(100)] for i in range(100)]
     id = [0 for j in range(100)]
     var = 0
     #Miejsce na ogólne statystyki#
     for a in kl:
         mecz = Mecz.objects.filter(id_klubu1=a.id_klubu) | Mecz.objects.filter(id_klubu2=a.id_klubu)
-        for b in range(10):
+        for b in range(13):
             if b == 0:
                 abc[var][b] = var
             if b == 1:
@@ -247,7 +221,6 @@ def klub(request,id_ligi,id_klubu):
                         abc[var][b] += 3
                     if temp[0] == temp[1]:
                         abc[var][b] += 1
-
             if b == 4:
                 for c in mecz:
                     temp = gole(c.id_meczu, a.id_klubu)
@@ -273,6 +246,27 @@ def klub(request,id_ligi,id_klubu):
                     abc[var][b] += temp[1]
             if b == 9:
                 abc[var][b] = a.id_klubu
+            if b == 10:
+                for c in mecz:
+                    staty1 = Statystyki_gracza.objects.filter(id_meczu = c.id_meczu)
+                    for s in staty1:
+                        for p1 in pilkarz1:
+                            if p1.id_pilkarza == s.id_pilkarza.id_pilkarza:
+                                abc[var][b] += s.faule
+            if b == 11:
+                for c in mecz:
+                    staty1 = Statystyki_gracza.objects.filter(id_meczu=c.id_meczu)
+                    for s in staty1:
+                        for p1 in pilkarz1:
+                            if p1.id_pilkarza == s.id_pilkarza.id_pilkarza:
+                                abc[var][b] += s.zolta
+            if b == 12:
+                for c in mecz:
+                    staty1 = Statystyki_gracza.objects.filter(id_meczu=c.id_meczu)
+                    for s in staty1:
+                        for p1 in pilkarz1:
+                            if p1.id_pilkarza == s.id_pilkarza.id_pilkarza:
+                                abc[var][b] += s.czerwona
         var += 1
     abc = sorted(abc, key=lambda x: x[3], reverse=True)
     pomocnicza = 0

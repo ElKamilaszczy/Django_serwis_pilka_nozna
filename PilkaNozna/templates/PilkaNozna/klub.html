@@ -4,6 +4,7 @@
 <center><h1>Statystyki klubu: {{a.nazwa_klubu}}</h1></center>
 <br>
 <br>
+<!--
 <div id = "{{kl.nazwa_klubu}}">
 <table class="table table-hover">
     <thead class="thead-dark">
@@ -20,6 +21,7 @@
       </tr>
     </thead>
     <tbody>
+    <h2>Ogólne statystyki całego klubu</h2>
 {% for a in kl %}
 
 <tr>
@@ -40,27 +42,112 @@
   </table>
 
 </div>
+!-->
+<div id = "ogolne_statystyki">
+    <table class = "table table-hover">
+        <thead class="thead-dark">
+        <div class="col-sm-8" style="background-color:lavender; height: 20px">Dana statystyka</div>
+        <div class="col-sm-4" style="background-color:lavenderblush;">Wartość liczbowa</div>
+        </thead>
+        <tbody>
+            <tr class = "table-dark text-dark">
+                <th>Liczba punktów</th>
+                {% for a in kl %}
+                    <td>
+                        {{forloop.counter0|another_filter:3|custom_filter:abc}}
+                    </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                    <th>Zwycięstwa</th>
+                    {% for a in kl %}
+                        <td>
+                            {{forloop.counter0|another_filter:4|custom_filter:abc}}
+                        </td>
+                    {% endfor %}
+            </tr>
+            <tr class = "table-dark text-dark">
+                    <th>Porażki</th>
+                    {% for a in kl %}
+                        <td>
+                            {{forloop.counter0|another_filter:5|custom_filter:abc}}
+                        </td>
+                    {% endfor %}
+            </tr>
+            <tr class = "table-dark text-dark">
+                    <th>Remisy</th>
+                    {% for a in kl %}
+                        <td>
+                            {{forloop.counter0|another_filter:6|custom_filter:abc}}
+                        </td>
+                    {% endfor %}
+            </tr>
+            <tr class = "table-dark text-dark">
+                    <th>Bramki zdobyte</th>
+                    {% for a in kl %}
+                        <td>
+                            {{forloop.counter0|another_filter:7|custom_filter:abc}}
+                        </td>
+                    {% endfor %}
+            </tr>
+            <tr class = "table-dark text-dark">
+                    <th>Bramki stracone</th>
+                    {% for a in kl %}
+                        <td>
+                            {{forloop.counter0|another_filter:8|custom_filter:abc}}
+                        </td>
+                    {% endfor %}
+            </tr>
+            <tr class = "table-dark text-dark">
+                    <th>Faule</th>
+                    {% for a in kl %}
+                        <td>
+                            {{forloop.counter0|another_filter:10|custom_filter:abc}}
+                        </td>
+                    {% endfor %}
+            </tr>
+            <tr class = "table-dark text-dark">
+                    <th>Żółte kartki</th>
+                    {% for a in kl %}
+                        <td>
+                            {{forloop.counter0|another_filter:11|custom_filter:abc}}
+                        </td>
+                    {% endfor %}
+            </tr>
+            <tr class = "table-dark text-dark">
+                    <th>Czerwone kartki</th>
+                    {% for a in kl %}
+                        <td>
+                            {{forloop.counter0|another_filter:12|custom_filter:abc}}
+                        </td>
+                    {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
 <div class = "lista_zawodnikow">
     <h2><center> Lista zawodników </center></h2>
     <div id = "accordion">
         <div class = "card">
-            <div class="card-header" height="auto" style="width:100%;table-layout: fixed;text-align:center">
-            <a class="card-link" data-toggle="collapse" href="#Bramkarze">
-             <img src = "https://bsbproduction.s3.amazonaws.com/portals/6473/images/pict--goalkeeper-soccer-silhouettes-vector-stencils-library.png"
-             width="1000" height = "500"/>
-            </a>
+            <a class="collapsed card-link" data-toggle="collapse" href="#Bramkarze">
+            <div class="card-header" style="background-color: lavender; text-align:center; height:50px ">
+            Bramkarze
             </div>
+            </a>
       </div>
         <div id = "Bramkarze" class = "collapse">
             <div class = "card-body">
                 <table class="table table-hover">
-                <thead class="thead-dark">
+                    <thead class="thead-dark">
                   <tr class="table-dark text-dark">
                     <th>Imie i nazwisko</th>
-                     <th>Wiek</th>
-                      <th>Ilość zagranych meczy</th>
-                     <th>Gole</th>
-                     <th>Asysty</th>
+                    <th>Wiek</th>
+                    <th>Ilość zagranych meczy</th>
+                    <th>Gole</th>
+                    <th>Asysty</th>
                     <th>Faule</th>
                     <th>LŻ</th>
                     <th>LC</th>
@@ -79,31 +166,33 @@
                     <td>{{forloop.counter0|another_filter:6|custom_filter:pilkarz_staty}}</td>
                     <td>{{forloop.counter0|another_filter:7|custom_filter:pilkarz_staty}}</td>
                     <td>{{forloop.counter0|another_filter:8|custom_filter:pilkarz_staty}}</td>
-                    <td>{{forloop.counter0|another_filter:9|custom_filter:pilkarz_staty}}</td>
             </tr>
             {% endif %}
             {% endfor %}
               </tbody>
               </table>
             </div>
+                </table>
         </div>
-            <div class = "card" style="background-color: lavender; text-align:center; height:100px ">
-            <div class="card-header">
-            <a class="collapsed card-link" data-toggle="collapse" href="#Obroncy">
-             Obrońcy
-            </a>
-            </div>
+       </div>
+            <div class = "card">
+             <a class="collapsed card-link" data-toggle="collapse" href="#Obroncy">
+                <div class="card-header"  style="background-color: lavenderblush; text-align:center; height:50px ">
+                 Obrońcy
+                </div>
+             </a>
       </div>
         <div id = "Obroncy" class = "collapse">
             <div class = "card-body">
                 <table class="table table-hover">
-                <thead class="thead-dark">
+                    <thead class="thead-dark">
+
                   <tr class="table-dark text-dark">
                     <th>Imie i nazwisko</th>
-                     <th>Wiek</th>
-                      <th>Ilość zagranych meczy</th>
-                     <th>Gole</th>
-                     <th>Asysty</th>
+                    <th>Wiek</th>
+                    <th>Ilość zagranych meczy</th>
+                    <th>Gole</th>
+                    <th>Asysty</th>
                     <th>Faule</th>
                     <th>LŻ</th>
                     <th>LC</th>
@@ -122,20 +211,21 @@
                     <td>{{forloop.counter0|another_filter:6|custom_filter:pilkarz_staty}}</td>
                     <td>{{forloop.counter0|another_filter:7|custom_filter:pilkarz_staty}}</td>
                     <td>{{forloop.counter0|another_filter:8|custom_filter:pilkarz_staty}}</td>
-                    <td>{{forloop.counter0|another_filter:9|custom_filter:pilkarz_staty}}</td>
             </tr>
             {% endif %}
             {% endfor %}
               </tbody>
               </table>
             </div>
+                </table>
         </div>
-        <div class = "card" style="background-color: blue; text-align:center; height:100px ">
-            <div class="card-header">
+       </div>
+        <div class = "card">
             <a class="collapsed card-link" data-toggle="collapse" href="#Pomocnicy">
-             Pomocnicy
+                <div class="card-header"  style="background-color: lavender; text-align:center; height:50px ">
+                Pomocnicy
+                </div>
             </a>
-            </div>
       </div>
         <div id = "Pomocnicy" class = "collapse">
             <div class = "card-body">
@@ -155,7 +245,7 @@
                 <tbody>
 
             {% for p in pilkarz %}
-            {% if p.id_pozycji.nazwa_pozycji == "Bramkarz" %}
+            {% if p.id_pozycji.nazwa_pozycji == "Pomocnik" %}
             <tr>
                     <td>{{forloop.counter0|another_filter:1|custom_filter:pilkarz_staty}}</td>
                     <td>{{forloop.counter0|another_filter:2|custom_filter:pilkarz_staty}}</td>
@@ -165,7 +255,6 @@
                     <td>{{forloop.counter0|another_filter:6|custom_filter:pilkarz_staty}}</td>
                     <td>{{forloop.counter0|another_filter:7|custom_filter:pilkarz_staty}}</td>
                     <td>{{forloop.counter0|another_filter:8|custom_filter:pilkarz_staty}}</td>
-                    <td>{{forloop.counter0|another_filter:9|custom_filter:pilkarz_staty}}</td>
             </tr>
             {% endif %}
             {% endfor %}
@@ -173,12 +262,12 @@
               </table>
             </div>
         </div>
-        <div class = "card" style="background-color: lavender; text-align:center; height:100px ">
-            <div class="collapsed card-header">
+        <div class = "card">
             <a class="card-link" data-toggle="collapse" href="#Napastnicy">
+            <div class="collapsed card-header"  style="background-color: lavenderblush; text-align:center; height:50px ">
              Napastnicy
-            </a>
             </div>
+            </a>
         </div>
         <div id = "Napastnicy" class = "collapse">
             <div class = "card-body">
@@ -208,7 +297,6 @@
                     <td>{{forloop.counter0|another_filter:6|custom_filter:pilkarz_staty}}</td>
                     <td>{{forloop.counter0|another_filter:7|custom_filter:pilkarz_staty}}</td>
                     <td>{{forloop.counter0|another_filter:8|custom_filter:pilkarz_staty}}</td>
-                    <td>{{forloop.counter0|another_filter:9|custom_filter:pilkarz_staty}}</td>
             </tr>
             {% endif %}
             {% endfor %}
@@ -217,41 +305,6 @@
             </div>
         </div>
     </div>
-    <!--
-    <table class="table table-hover">
-    <thead class="thead-dark">
-      <tr class="table-dark text-dark">
-        <th>Imie i nazwisko</th>
-         <th>Wiek</th>
-          <th>Ilość zagranych meczy</th>
-         <th>Gole</th>
-         <th>Asysty</th>
-        <th>Faule</th>
-        <th>LŻ</th>
-        <th>LC</th>
-      </tr>
-    </thead>
-    <tbody>
-
-{% for p in pilkarz %}
-<tr>
-        <td>{{forloop.counter0|another_filter:1|custom_filter:pilkarz_staty}}</td>
-        <td>{{forloop.counter0|another_filter:2|custom_filter:pilkarz_staty}}</td>
-        <td>{{forloop.counter0|another_filter:3|custom_filter:pilkarz_staty}}</td>
-        <td>{{forloop.counter0|another_filter:4|custom_filter:pilkarz_staty}}</td>
-        <td>{{forloop.counter0|another_filter:5|custom_filter:pilkarz_staty}}</td>
-        <td>{{forloop.counter0|another_filter:6|custom_filter:pilkarz_staty}}</td>
-        <td>{{forloop.counter0|another_filter:7|custom_filter:pilkarz_staty}}</td>
-        <td>{{forloop.counter0|another_filter:8|custom_filter:pilkarz_staty}}</td>
-        <td>{{forloop.counter0|another_filter:9|custom_filter:pilkarz_staty}}</td>
-</tr>
-
-{% endfor %}
-    </tbody>
-  </table>
-
-
-   !-->
 </div>
 
 
