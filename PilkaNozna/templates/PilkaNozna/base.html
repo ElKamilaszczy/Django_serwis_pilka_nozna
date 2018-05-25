@@ -11,8 +11,6 @@
 
   <style>
 
-
-
     @import url(http://fonts.googleapis.com/css?family=Roboto);
 
 /****** LOGIN MODAL ******/
@@ -141,7 +139,7 @@
       </button>
       <a class="navbar-brand" href="#"><img src="http://1.bp.blogspot.com/-KCeY792JHps/T5rddCHNbuI/AAAAAAAABE8/82To6rreyFQ/s1600/football.png" width="30" height="23" /> </a>
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
+        <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li><a href="{% url 'ligi' %}">Home</a></li>
         <li><a href="#">About</a></li>
@@ -149,7 +147,7 @@
         <li><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li><a href="/PilkaNozna/login"><span class="glyphicon glyphicon-log-in"></span> Logowanie dla organizatorów</a></li>
       </ul>
     </div>
   </div>
@@ -164,7 +162,7 @@
 
     {% block content %}
     {% endblock %}
-</div><br>
+</div>
 <!--<a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
 
 <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">

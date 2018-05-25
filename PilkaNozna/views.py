@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
 from .forms import PostForm
+#Import formularza logowania
+from .forms import LoginForm
+#Import mechanizmów uwierzytelniania i umieszczenia w sesji (login)
+from django.contrib.auth import authenticate, login
 from operator import itemgetter
 from django.shortcuts import redirect
 
@@ -320,4 +324,23 @@ def add_liga(request):
     return render(request, 'PilkaNozna/index1.html', {'form': form})
 
 
+'''Widok dla formularza logowania organizatora/użytkownika'''
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(login = cd['login'], hasło = cd['hasło'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return render(request, 'Pilkanozna/base.html')
+                else:
+                    return HttpResponse('Konto jest zablokowane')
+            else:
+                return HttpResponse('Nieprawidłowe dane logowania')
+    else:
+        form = LoginForm()
+    context = {'form': form}
+    return render(request, 'PilkaNozna/login.html', context)
 

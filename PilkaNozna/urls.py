@@ -1,5 +1,5 @@
 from django.urls import path
-
+from django.conf.urls import url
 from . import views
 
 urlpatterns = (
@@ -9,5 +9,6 @@ urlpatterns = (
     path('<int:id_ligi>/ranking', views.ranking_st, name='ranking_st'),
     path('<int:id_ligi>/kolejki', views.kolejki, name='kolejki'),
     path('<int:id_ligi>/<int:id_klubu>', views.klub, name='klub'),
-
+    #wzorzec url dla logowania i dodanie w urls.py admina
+    path('login/', views.user_login, name='login'),
 )
