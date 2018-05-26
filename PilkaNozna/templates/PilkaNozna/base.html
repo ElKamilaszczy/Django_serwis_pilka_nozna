@@ -145,13 +145,13 @@
         {% if request.user.is_authenticated %}
         <li >
           <a href="{% url 'dashboard' %}">Panel główny</a>
-        </li>
+        </li>{% endif %}
         <li>
           <a href="#">Projects</a>
         </li>
         <li>
           <a href="#">Contact</a></li>
-        {% endif %}
+
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if request.user.is_authenticated %}
