@@ -129,7 +129,7 @@
   </style>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-fixed-top navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -141,13 +141,25 @@
     </div>
         <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li><a href="{% url 'ligi' %}">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Projects</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="{% url 'ligi' %}">Strona główna</a></li>
+        {% if request.user.is_authenticated %}
+        <li >
+          <a href="{% url 'dashboard' %}">Panel główny</a>
+        </li>
+        <li>
+          <a href="#">Projects</a>
+        </li>
+        <li>
+          <a href="#">Contact</a></li>
+        {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/PilkaNozna/login"><span class="glyphicon glyphicon-log-in"></span> Logowanie dla organizatorów</a></li>
+        {% if request.user.is_authenticated %}
+        Witaj, {{request.user.first_name}}
+        <li><a href = "{%url 'logout' %}">Wyloguj</a></li>
+        {% else %}
+        <li><a href="{%url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Logowanie dla organizatorów</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>

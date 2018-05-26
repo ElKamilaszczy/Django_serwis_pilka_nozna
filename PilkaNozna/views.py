@@ -8,7 +8,8 @@ from .forms import LoginForm
 from django.contrib.auth import authenticate, login
 from operator import itemgetter
 from django.shortcuts import redirect
-
+#Dla zalogowanego:
+from django.contrib.auth.decorators import login_required
 def ligi(request):
     latest_question = Liga.objects.order_by('nazwa_ligi')
 
@@ -344,3 +345,6 @@ def user_login(request):
     context = {'form': form}
     return render(request, 'PilkaNozna/login.html', context)
 
+@login_required
+def dashboard(request):
+    return render(request, 'PilkaNozna/dashboard.html', {'section': dashboard})

@@ -1,0 +1,22 @@
+{% extends 'PilkaNozna/base.html' %}
+{% load app_filters %}
+{% block title %} Logowanie {% endblock %}
+{% block content %}
+<h1>Logowanie</h1>
+<h5>Logowanie dla organizatorów</h5>
+{% if form.errors %}
+<p>Nazwa użytkownika lub hasło są nieprawidłowe.</p>
+{% else %}
+<p>Wypełnij formularz, by się zalogować</p>
+{% endif %}
+<div class = "login-form">
+    <form action = "{% url 'login' %}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }} "/>
+        <p>
+            <input type="submit" value="Zaloguj">
+        </p>
+    </form>
+</div>
+{% endblock %}

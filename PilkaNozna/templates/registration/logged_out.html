@@ -1,0 +1,9 @@
+{% extends 'PilkaNozna/base.html' %}
+{% load app_filters %}
+{% block title %} Wylogowanie {% endblock %}
+{% block content %}
+<h1>Wylogowanie</h1>
+<p>
+    Zostałeś poprawnie wylogowany. Możesz <a href = "{% url 'login' %}">Zalogować się ponownie</a>.
+</p>
+{% endblock %}

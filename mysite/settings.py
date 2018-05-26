@@ -31,13 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'PilkaNozna.apps.PilkanoznaConfig',
+    'django.contrib.admin',
     #'sorting_bootstrap'#
 ]
 
@@ -128,5 +129,8 @@ TEMPLATE_LOADERS = (
  )),
 )
 '''
-
-
+#Dynamiczne tworzenie adresów URL
+from django.urls import reverse_lazy
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_URL = reverse_lazy('login')
+LOGOUT_URL = reverse_lazy('logout')
