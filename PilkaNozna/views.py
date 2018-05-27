@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
-from .forms import PostForm
 #Import formularza logowania
-from .forms import LoginForm
+from .forms import LoginForm, LigaForm, KlubForm
 #Import mechanizmów uwierzytelniania i umieszczenia w sesji (login)
 from django.contrib.auth import authenticate, login
 from operator import itemgetter
@@ -314,22 +313,13 @@ def klub(request,id_ligi,id_klubu):
     context = {'lg': lg, 'kl':kl, 'abc':abc, 'a':a, 'pilkarz_staty': pilkarz_staty, 'pilkarz': pilkarz}
     return render(request, 'PilkaNozna/klub.html', context)
 
-def add_liga(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit = True)
-
-    else:
-        form = PostForm()
-    return render(request, 'PilkaNozna/index1.html', {'form': form})
 
 
 '''Widok dla formularza logowania organizatora/użytkownika'''
+'''
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
-        request.session.set_expiry(0)
         if form.is_valid():
             cd = form.cleaned_data
             user = authenticate(login = cd['login'], hasło = cd['hasło'])
@@ -345,8 +335,37 @@ def user_login(request):
         form = LoginForm()
     context = {'form': form}
     return render(request, 'PilkaNozna/login.html', context)
+'''
 
+'''
+WIDOKI DLA FORMULARZY
+'''
 '''Widok ograniczony dla zalogowanych'''
 @login_required
-def dashboard(request):
-    return render(request, 'PilkaNozna/dashboard.html', {'section': dashboard})
+def panel(request):
+    return render(request, 'PilkaNozna/panel.html', {'section': panel})
+
+'''Widok dla dodawania ligi'''
+def dodaj_lige(request):
+    if request.method == 'POST':
+        form = LigaForm(request.POST)
+        if form.is_valid():
+            liga = form.save(commit = True)
+    else:
+        form = LigaForm()
+    return render(request, 'PilkaNozna/index1.html', {'form': form})
+
+from django.shortcuts import get_object_or_404
+@login_required
+def dodaj_klub(request):
+    wsk = 1
+    if request.method == 'POST':
+        form = KlubForm(request.POST)
+        if form.is_valid():
+            klub = form.save()
+            return render(request, 'PilkaNozna/panel.html')
+
+    else:
+        form = KlubForm()
+    context = {'form': form, 'wsk': wsk}
+    return render(request, 'PilkaNozna/panel.html', context)

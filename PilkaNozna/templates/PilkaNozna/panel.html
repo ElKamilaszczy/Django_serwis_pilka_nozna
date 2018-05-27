@@ -1,0 +1,43 @@
+{% extends 'PilkaNozna/base.html' %}
+{% load app_filters %}
+{% block title %} Panel główny {% endblock %}
+{% block content %}
+<br><br>
+<table style="width:100%" >
+  <tr >
+    <td align="center" > <a href="{% url 'dodaj_klub' %}">
+        <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj klub</h3></button></a> </td>
+    <td align="center"><a href="#">
+        <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj mecz</h3></button></a></td>
+    <td align="center"><a href="#">
+        <button type="button" class="btn btn-primary btn-md"> <h3>Zarzadzanie klubem</h3></button></a></td>
+  </tr>
+
+</table><br>
+{% if wsk == 1 %}
+{% if request.user.is_authenticated %}
+<h1>Formularz dodawania klubu</h1>
+{% if form.errors %}
+<p>Błędne dane.</p>
+{% endif %}
+<div class = "klub-form">
+    <form action = "{% url 'dodaj_klub'%}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+        <p>
+            <input type="submit" value="Dodaj klub">
+        </p>
+    </form>
+</div>
+{% endif %}
+{% endif %}
+
+{% if wsk == 2 %}
+do stuff2
+{% endif %}
+
+{% if wsk == 3 %}
+do stuff3
+{% endif %}
+
+{% endblock %}

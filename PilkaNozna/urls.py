@@ -5,7 +5,7 @@ from django.contrib.auth.views import logout, login, logout_then_login
 urlpatterns = (
     path('', views.ligi, name='ligi'),
     path('<int:id_ligi>/tabela', views.tabela, name='tabela'),
-    path('nowa_liga/', views.add_liga, name='add_liga'),
+    #path('panel/nowa_liga/', views.dodaj_lige, name='dodaj_lige'),
     path('<int:id_ligi>/ranking', views.ranking_st, name='ranking_st'),
     path('<int:id_ligi>/kolejki', views.kolejki, name='kolejki'),
     path('<int:id_ligi>/<int:id_klubu>', views.klub, name='klub'),
@@ -16,5 +16,7 @@ urlpatterns = (
     path('logout/', logout, name='logout'),
     path('logout-then-login/', logout_then_login, name='logout_then_login'),
     #Dla dashboardu dla organizatora:
-    path('panel/', views.dashboard, name = 'dashboard')
+    path('panel/', views.panel, name='panel'),
+    path('panel/dodaj_klub', views.dodaj_klub, name='dodaj_klub')
+    #path('panel/dodaj_mecz', views.dodaj_mecz, name = 'dodaj_mecz')
 )

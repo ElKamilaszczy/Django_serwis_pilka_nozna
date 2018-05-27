@@ -144,7 +144,7 @@
         <li><a href="{% url 'ligi' %}">Strona główna</a></li>
         {% if request.user.is_authenticated %}
         <li >
-          <a href="{% url 'dashboard' %}">Panel główny</a>
+          <a href="{% url 'panel' %}">Panel główny</a>
         </li>{% endif %}
         <li>
           <a href="#">Projects</a>
