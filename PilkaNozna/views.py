@@ -329,6 +329,7 @@ def add_liga(request):
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
+        request.session.set_expiry(0)
         if form.is_valid():
             cd = form.cleaned_data
             user = authenticate(login = cd['login'], hasło = cd['hasło'])
@@ -345,6 +346,7 @@ def user_login(request):
     context = {'form': form}
     return render(request, 'PilkaNozna/login.html', context)
 
+'''Widok ograniczony dla zalogowanych'''
 @login_required
 def dashboard(request):
     return render(request, 'PilkaNozna/dashboard.html', {'section': dashboard})
