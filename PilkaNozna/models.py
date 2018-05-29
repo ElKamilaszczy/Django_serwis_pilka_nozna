@@ -65,14 +65,24 @@ class Mecz(models.Model):
         return "{}  - {}, kolejka: {}".format(self.id_klubu1, self.id_klubu2, self.kolejka)
 
 class Statystyki_gracza(models.Model):
+    zolta_choices = (
+        (0, '0'),
+        (1, '1'),
+        (2, '2'),
+
+    )
+    czerwona_choices = (
+        (0, '0'),
+        (1, '1'),
+    )
     id_statystyki = models.AutoField(primary_key = True)
     id_pilkarza = models.ForeignKey(Pilkarz, on_delete = models.CASCADE)
     id_meczu = models.ForeignKey(Mecz, on_delete = models.CASCADE)
     gole = models.IntegerField(default = 0)
     asysty = models.IntegerField(default = 0)
     faule = models.IntegerField(default = 0)
-    zolta = models.IntegerField(default = 0)
-    czerwona = models.IntegerField(default = 0)
+    zolta = models.IntegerField(choices=zolta_choices, default = 0)
+    czerwona = models.IntegerField(choices= czerwona_choices, default = 0)
 
     class Meta:
         verbose_name_plural = "Statystyki"

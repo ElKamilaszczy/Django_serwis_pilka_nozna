@@ -2,13 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
 #Import formularza logowania
-from .forms import LoginForm, LigaForm, KlubForm
+from .forms import LoginForm, LigaForm, KlubForm, MeczForm, StatystykiForm
 #Import mechanizmów uwierzytelniania i umieszczenia w sesji (login)
-from django.contrib.auth import authenticate, login
-from operator import itemgetter
-from django.shortcuts import redirect
 #Dla zalogowanego:
 from django.contrib.auth.decorators import login_required
+#Komunikaty
+from django.contrib import messages
 def ligi(request):
     latest_question = Liga.objects.order_by('nazwa_ligi')
 
@@ -367,5 +366,39 @@ def dodaj_klub(request):
 
     else:
         form = KlubForm()
+    context = {'form': form, 'wsk': wsk}
+    return render(request, 'PilkaNozna/panel.html', context)
+
+@login_required
+def dodaj_mecz(request):
+    wsk = 2
+    if request.method == 'POST':
+        form = MeczForm(request.POST)
+        if form.is_valid():
+            mecz = form.save()
+            messages.success(request, 'Pomyślnie dodano mecz.')
+            return render(request, 'PilkaNozna/panel.html')
+        else:
+            messages.error(request, 'Wystąpił błąd podczas wypełniania. Popraw wskazane dane.')
+
+    else:
+        form = MeczForm()
+    context = {'form': form, 'wsk': wsk}
+    return render(request, 'PilkaNozna/panel.html', context)
+
+@login_required
+def dodaj_statystyki(request):
+    wsk = 3
+    if request.method == 'POST':
+        form = StatystykiForm(request.POST)
+        if form.is_valid():
+            mecz = form.save()
+            messages.success(request, 'Pomyślnie dodano mecz.')
+            return render(request, 'PilkaNozna/panel.html')
+        else:
+            messages.error(request, 'Wystąpił błąd podczas wypełniania. Popraw wskazane dane.')
+
+    else:
+        form = StatystykiForm()
     context = {'form': form, 'wsk': wsk}
     return render(request, 'PilkaNozna/panel.html', context)

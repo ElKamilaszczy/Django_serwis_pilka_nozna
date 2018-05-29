@@ -17,6 +17,7 @@ urlpatterns = (
     path('logout-then-login/', logout_then_login, name='logout_then_login'),
     #Dla dashboardu dla organizatora:
     path('panel/', views.panel, name='panel'),
-    path('panel/dodaj_klub', views.dodaj_klub, name='dodaj_klub')
-    #path('panel/dodaj_mecz', views.dodaj_mecz, name = 'dodaj_mecz')
+    path('panel/dodaj_klub/', views.dodaj_klub, name='dodaj_klub'),
+    path('panel/dodaj_mecz/', views.dodaj_mecz, name = 'dodaj_mecz'),
+    path('panel/dodaj_statystyki/', views.dodaj_statystyki, name = 'dodaj_statystyki')
 )
