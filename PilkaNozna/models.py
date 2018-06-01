@@ -78,9 +78,9 @@ class Statystyki_gracza(models.Model):
     id_statystyki = models.AutoField(primary_key = True)
     id_pilkarza = models.ForeignKey(Pilkarz, on_delete = models.CASCADE)
     id_meczu = models.ForeignKey(Mecz, on_delete = models.CASCADE)
-    gole = models.IntegerField(default = 0)
-    asysty = models.IntegerField(default = 0)
-    faule = models.IntegerField(default = 0)
+    gole = models.IntegerField()
+    asysty = models.IntegerField()
+    faule = models.IntegerField()
     zolta = models.IntegerField(choices=zolta_choices, default = 0)
     czerwona = models.IntegerField(choices= czerwona_choices, default = 0)
 

@@ -23,8 +23,8 @@
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj mecz</h3></button></a></td>
      <td align="center"><a href="{% url 'dodaj_statystyki'%}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj statystyki gracza</h3></button></a></td>
-    <td align="center"><a href="#">
-        <button type="button" class="btn btn-primary btn-md"> <h3>Zarzadzanie klubem</h3></button></a></td>
+    <td align="center"><a href="{% url 'dodaj_pilkarza'%}">
+        <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj zawodnika do klubu</h3></button></a></td>
   </tr>
 
 </table><br>
@@ -74,17 +74,30 @@
     {{ form.as_p }}
     {% csrf_token %}
         <p>
-            <input type="submit" value="Dodaj mecz">
+            <input type="submit" value="Dodaj statystyki">
         </p>
     </form>
 </div>
 {% endif %}
 
-
 {% endif %}
 
 {% if wsk == 4 %}
-do stuff3
+{% if request.user.is_authenticated %}
+<h1>Formularz dodawania piłkarzy</h1>
+{% if form.errors %}
+<p>Błędne dane.</p>
+{% endif %}
+<div class = "pilkarz-form">
+    <form action = "{% url 'dodaj_pilkarza'%}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+        <p>
+            <input type="submit" value="Dodaj piłkarza">
+        </p>
+    </form>
+</div>
+{% endif %}
 {% endif %}
 
 {% endblock %}

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
 #Import formularza logowania
-from .forms import LoginForm, LigaForm, KlubForm, MeczForm, StatystykiForm
+from .forms import LoginForm, LigaForm, KlubForm, MeczForm, StatystykiForm, PilkarzForm
 #Import mechanizmów uwierzytelniania i umieszczenia w sesji (login)
 #Dla zalogowanego:
 from django.contrib.auth.decorators import login_required
@@ -288,11 +288,10 @@ def klub(request,id_ligi,id_klubu):
             if b == 2:
                 pilkarz_staty[var][b] = p.wiek_pilkarza()
             if b == 3:
-                for s in staty:
-                        pilkarz_staty[var][b] = staty.count()
+                pilkarz_staty[var][b] = staty.count()
             if b == 4:
                 for s in staty:
-                        pilkarz_staty[var][b] += s.gole
+                    pilkarz_staty[var][b] += s.gole
             if b == 5:
                 for s in staty:
                         pilkarz_staty[var][b] += s.asysty
@@ -378,13 +377,11 @@ def dodaj_mecz(request):
             mecz = form.save()
             messages.success(request, 'Pomyślnie dodano mecz.')
             return render(request, 'PilkaNozna/panel.html')
-        else:
-            messages.error(request, 'Wystąpił błąd podczas wypełniania. Popraw wskazane dane.')
-
     else:
         form = MeczForm()
     context = {'form': form, 'wsk': wsk}
     return render(request, 'PilkaNozna/panel.html', context)
+
 
 @login_required
 def dodaj_statystyki(request):
@@ -393,12 +390,23 @@ def dodaj_statystyki(request):
         form = StatystykiForm(request.POST)
         if form.is_valid():
             mecz = form.save()
-            messages.success(request, 'Pomyślnie dodano mecz.')
+            messages.success(request, 'Pomyślnie dodano statystyki.')
             return render(request, 'PilkaNozna/panel.html')
-        else:
-            messages.error(request, 'Wystąpił błąd podczas wypełniania. Popraw wskazane dane.')
-
     else:
         form = StatystykiForm()
+    context = {'form': form, 'wsk': wsk}
+    return render(request, 'PilkaNozna/panel.html', context)
+
+@login_required
+def dodaj_pilkarza(request):
+    wsk = 4
+    if request.method == 'POST':
+        form = PilkarzForm(request.POST)
+        if form.is_valid():
+            pilkarz = form.save()
+            messages.success(request, 'Pomyślnie dodano piłkarza.')
+            return render(request, 'PilkaNozna/panel.html')
+    else:
+        form = PilkarzForm()
     context = {'form': form, 'wsk': wsk}
     return render(request, 'PilkaNozna/panel.html', context)
