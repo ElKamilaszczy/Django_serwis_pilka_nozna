@@ -40,20 +40,21 @@ class MeczForm(forms.ModelForm):
         if data > datetime.date.today():
             raise forms.ValidationError('Niepoprawna data! Podaj poprawna datę meczu.')
         return data
+'''
     def clean(self):
         id_klubuu1 = self.cleaned_data['id_klubu1']
         id_klubuu2 = self.cleaned_data['id_klubu2']
-        kl1 = Klub.objects.get(nazwa_klubu = id_klubuu1)
-        kl2 = Klub.objects.get(nazwa_klubu = id_klubuu2)
+        kl1 = Klub.objects.all().get(id_klubu = id_klubuu1)
+        kl2 = Klub.objects.all().get(id_klubu=id_klubuu2)
         if kl1.id_ligi != kl2.id_ligi:
             raise forms.ValidationError('Inne ligi drużyn')
         return id_klubuu1, id_klubuu2
-
+'''
 #Zrobić
 # - czy zawodnik jest w danym klubie
 class StatystykiForm(forms.ModelForm):
-    id_pilkarza = forms.NumberInput()
-    id_meczu = forms.NumberInput()
+    id_pilkarza = forms.TextInput()
+    id_meczu = forms.TextInput()
     class Meta:
         model = Statystyki_gracza
         fields = ('id_pilkarza', 'id_meczu', 'gole', 'asysty', 'faule', 'zolta', 'czerwona',)
@@ -72,6 +73,22 @@ class StatystykiForm(forms.ModelForm):
         if faule < 0:
             raise forms.ValidationError('Błędna liczba.')
         return faule
+    '''
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        id_pilkarza1 = cleaned_data.get("id_pilkarza")
+        id_meczu1 =  cleaned_data.get("id_meczu")
+
+        #Sprawdzić czy piłkarz należy do jednego z klubów, które rozgrywają dany mecz.
+        mecz = Mecz.objects.get(id_meczu = id_meczu1)
+        klub = Klub.objects.filter(id_klubu = mecz[1]) | Klub.objects.filter(id_klubu = mecz[2])
+        for k in klub:
+            pilkarz = Pilkarz.objects.get(id_pilkarza = id_pilkarza1)
+            if k.id_klubu != pilkarz[4]:
+                return forms.ValidationError('Brak zawodnika')
+
+        return cleaned_data
+    '''
 
 class PilkarzForm(forms.ModelForm):
     imie = forms.TextInput()
