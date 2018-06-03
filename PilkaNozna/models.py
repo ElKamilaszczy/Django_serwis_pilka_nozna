@@ -48,6 +48,10 @@ class Pilkarz(models.Model):
 
     def __str__(self):
         return "{} {}".format(self.imie,self.nazwisko)
+
+    def klub(self):
+        return self.id_klubu
+
     def wiek_pilkarza(self):
         return datetime.now().year - self.data_urodzenia.year
 
