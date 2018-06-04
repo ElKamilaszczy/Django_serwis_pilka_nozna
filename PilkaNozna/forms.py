@@ -71,22 +71,20 @@ class StatystykiForm(forms.ModelForm):
         if faule < 0:
             raise forms.ValidationError('Błędna liczba.')
         return faule
-
-    def clean(self):
-        data = self.cleaned_data
-        id_pilkarza = data.get("id_pilkarza")
-        id_meczu = data.get("id_meczu")
+    def clean_id_meczu(self):
+        id_pilkarza = self.cleaned_data.get('id_pilkarza')
+        id_meczu = self.cleaned_data.get('id_meczu')
         mecz = Mecz.objects.all()
         pilkarz = Pilkarz.objects.all()
         for i in mecz:
             if i.id_meczu == id_meczu:
                 for j in pilkarz:
                     if j.id_pilkarza == id_pilkarza:
-                        if (j.id_klubu.id_klubu == i.id_klubu1.id_klubu) and (j.id_klubu.id_klubu == i.id_klubu2.id_klubu):
-        #Sprawdzić czy piłkarz należy do jednego z klubów, które rozgrywają dany mecz.
+                        if (j.id_klubu.id_klubu != i.id_klubu1.id_klubu) and (
+                                j.id_klubu.id_klubu != i.id_klubu2.id_klubu):
+                                # Sprawdzić czy piłkarz należy do jednego z klubów, które rozgrywają dany mecz.
                             return forms.ValidationError('Brak zawodnika')
-                        else: return self.data
-
+        return id_meczu
 
 class PilkarzForm(forms.ModelForm):
     imie = forms.TextInput()
