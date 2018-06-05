@@ -6,24 +6,25 @@ class LigaForm(forms.ModelForm):
     class Meta:
         model = Liga
         fields = ('nazwa_ligi',)
+        widgets = {
+            'nazwa_ligi': forms.TextInput(attrs = {'style': 'width:250px', 'title': 'Podaj nazwę ligi.'}),
+        }
 
 class KlubForm(forms.ModelForm):
     nazwa_klubu = forms.TextInput()
     class Meta:
         model = Klub
         fields = ('nazwa_klubu', 'id_ligi',)
+        widgets = {
+            'nazwa_klubu': forms.TextInput(attrs = {'style': 'width:250px', 'title': 'Podaj nazwę klubu.'}),
+        }
     def clean_nazwa_klubu(self):
         klub = self.cleaned_data(['nazwa_klubu'])
         if klub != klub.capitalize():
             raise forms.ValidationError('Nazwa klubu musi rozpoczynać się od wielkiej litery.')
         return klub
-'''
-WALIDACJA:
-- CZY KLUBY SĄ W TEJ SAMEJ LIDZE
-'''
+
 class MeczForm(forms.ModelForm):
-    id_klubu1 = forms.TextInput()
-    id_klubu2 = forms.TextInput()
     class Meta:
         model = Mecz
         fields = ('id_klubu1', 'id_klubu2', 'kolejka', 'data_meczu',)
@@ -40,18 +41,17 @@ class MeczForm(forms.ModelForm):
         if data > datetime.date.today():
             raise forms.ValidationError('Niepoprawna data! Podaj poprawna datę meczu.')
         return data
-'''
+
     def clean(self):
-        id_klubuu1 = self.cleaned_data['id_klubu1']
-        id_klubuu2 = self.cleaned_data['id_klubu2']
-        kl1 = Klub.objects.all().get(id_klubu = id_klubuu1)
-        kl2 = Klub.objects.all().get(id_klubu=id_klubuu2)
+        cleaned_data = super().clean()
+        id_klubu1 = cleaned_data.get("id_klubu1")
+        id_klubu2 = cleaned_data.get("id_klubu2")
+        kl1 = Klub.objects.all().get(id_klubu = id_klubu1.id_klubu)
+        kl2 = Klub.objects.all().get(id_klubu = id_klubu2.id_klubu)
         if kl1.id_ligi != kl2.id_ligi:
-            raise forms.ValidationError('Inne ligi drużyn')
-        return id_klubuu1, id_klubuu2
-'''
-#Zrobić
-# - czy zawodnik jest w danym klubie
+            raise forms.ValidationError('Drużyny z innych lig nie mogą rozgrywać ze sobą meczów.')
+        return cleaned_data
+
 class StatystykiForm(forms.ModelForm):
     class Meta:
         model = Statystyki_gracza
@@ -71,20 +71,14 @@ class StatystykiForm(forms.ModelForm):
         if faule < 0:
             raise forms.ValidationError('Błędna liczba.')
         return faule
-    def clean_id_meczu(self):
-        id_pilkarza = self.cleaned_data.get('id_pilkarza')
-        id_meczu = self.cleaned_data.get('id_meczu')
-        mecz = Mecz.objects.all()
-        pilkarz = Pilkarz.objects.all()
-        for i in mecz:
-            if i.id_meczu == id_meczu:
-                for j in pilkarz:
-                    if j.id_pilkarza == id_pilkarza:
-                        if (j.id_klubu.id_klubu != i.id_klubu1.id_klubu) and (
-                                j.id_klubu.id_klubu != i.id_klubu2.id_klubu):
-                                # Sprawdzić czy piłkarz należy do jednego z klubów, które rozgrywają dany mecz.
-                            return forms.ValidationError('Brak zawodnika')
-        return id_meczu
+
+    def clean(self):
+        cleaned_data = super().clean()
+        pilkarz = cleaned_data.get("id_pilkarza")
+        mecz = cleaned_data.get("id_meczu")
+        if pilkarz.id_klubu.id_klubu != mecz.id_klubu1.id_klubu and pilkarz.id_klubu.id_klubu != mecz.id_klubu2.id_klubu:
+            raise forms.ValidationError('Zawodnik nie jest graczem tych klubów!')
+        return cleaned_data
 
 class PilkarzForm(forms.ModelForm):
     imie = forms.TextInput()
@@ -96,7 +90,7 @@ class PilkarzForm(forms.ModelForm):
         widgets = {
             'imie': forms.TextInput(attrs={'style': 'width:250px', 'pattern':'[a-zA-Z]+', 'title':'Imie może zawierać tylko litery.'}),
             'nazwisko': forms.TextInput(attrs={'style': 'width:250px', 'pattern':'[a-zA-Z]+', 'title':'Nazwisko może zawierać tylko litery.'}),
-            'data_urodzenia':  forms.DateInput(attrs={'type': 'date'}),
+            'data_urodzenia':  forms.DateInput(attrs={'type': 'date', 'title': 'Podaj lub wybierz datę.'}),
         }
     #Walidacja danych wejściowych#
     def clean_data_urodzenia(self):

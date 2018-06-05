@@ -410,3 +410,17 @@ def dodaj_pilkarza(request):
         form = PilkarzForm()
     context = {'form': form, 'wsk': wsk}
     return render(request, 'PilkaNozna/panel.html', context)
+
+@login_required
+def dodaj_lige(request):
+    wsk = 5
+    if request.method == 'POST':
+        form = LigaForm(request.POST)
+        if form.is_valid():
+            liga = form.save()
+            messages.success(request, 'Pomyślnie dodano ligę.')
+            return render(request, 'PilkaNozna/panel.html')
+    else:
+        form = LigaForm()
+    context = {'form': form, 'wsk': wsk}
+    return render(request, 'PilkaNozna/panel.html', context)

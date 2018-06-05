@@ -20,5 +20,6 @@ urlpatterns = (
     path('panel/dodaj_klub/', views.dodaj_klub, name='dodaj_klub'),
     path('panel/dodaj_mecz/', views.dodaj_mecz, name = 'dodaj_mecz'),
     path('panel/dodaj_statystyki/', views.dodaj_statystyki, name = 'dodaj_statystyki'),
-    path('panel/dodaj_pilkarza/', views.dodaj_pilkarza, name = 'dodaj_pilkarza')
+    path('panel/dodaj_pilkarza/', views.dodaj_pilkarza, name = 'dodaj_pilkarza'),
+    path('panel/dodaj_lige/', views.dodaj_lige, name = 'dodaj_lige'),
 )

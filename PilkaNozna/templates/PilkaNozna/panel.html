@@ -17,14 +17,16 @@
 </div>
 <table style="width:100%" >
   <tr >
-    <td align="center" > <a href="{% url 'dodaj_klub' %}">
+     <td align="center" > <a href="{% url 'dodaj_klub' %}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj klub</h3></button></a> </td>
-    <td align="center"><a href="{% url 'dodaj_mecz' %}">
+     <td align="center"><a href="{% url 'dodaj_mecz' %}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj mecz</h3></button></a></td>
      <td align="center"><a href="{% url 'dodaj_statystyki'%}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj statystyki gracza</h3></button></a></td>
-    <td align="center"><a href="{% url 'dodaj_pilkarza'%}">
+     <td align="center"><a href="{% url 'dodaj_pilkarza'%}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj zawodnika do klubu</h3></button></a></td>
+      <td align="center"><a href="{% url 'dodaj_lige'%}">
+        <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj ligę</h3></button></a></td>
   </tr>
 
 </table><br>
@@ -100,4 +102,21 @@
 {% endif %}
 {% endif %}
 
+{% if wsk == 5 %}
+{% if request.user.is_authenticated %}
+<h1>Formularz dodawania ligi.</h1>
+{% if form.errors %}
+<p>Błędne dane.</p>
+{% endif %}
+<div class = "liga-form">
+    <form action = "{% url 'dodaj_lige'%}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+        <p>
+            <input type="submit" value="Dodaj ligę">
+        </p>
+    </form>
+</div>
+{% endif %}
+{% endif %}
 {% endblock %}
