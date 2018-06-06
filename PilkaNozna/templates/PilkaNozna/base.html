@@ -146,11 +146,9 @@
         <li >
           <a href="{% url 'panel' %}">Panel główny</a>
         </li>{% endif %}
-        <li>
-          <a href="#">Projects</a>
-        </li>
-        <li>
-          <a href="#">Contact</a></li>
+        <li>{% if request.user.is_authenticated %}
+          <a href="{% url 'wyslij_wiadomosc' %}">Kontakt z administracją</a></li>
+        {% endif %}
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -191,70 +189,13 @@
 				</div>
 			</div>
 		  </div>-->
-<!--
+
+<!-- Footer -->
 <footer class="container-fluid text-center">
-  <p>Footer Text</p>
-</footer>
-!-->
-<!-- Footer -->
-<footer class="page-footer font-small blue pt-4 mt-4">
-
-  <!-- Footer Links -->
-  <div class="container-fluid text-center text-md-left">
-
-    <!-- Grid row -->
-    <div class="row">
-
-      <!-- Grid column -->
-      <div class="col-md-6 mt-md-0 mt-3">
-
-        <!-- Content -->
-        <h5 class="text-uppercase">Footer Content</h5>
-        <p>Here you can use rows and columns here to organize your footer content.</p>
-
-      </div>
-      <!-- Grid column -->
-
-      <hr class="clearfix w-100 d-md-none pb-3">
-
-      <!-- Grid column -->
-      <div class="col-md-6 mb-md-0 mb-3">
-
-        <!-- Links -->
-        <h5 class="text-uppercase">Links</h5>
-
-        <ul class="list-unstyled">
-          <li>
-            <a href="#!">Link 1</a>
-          </li>
-          <li>
-            <a href="#!">Link 2</a>
-          </li>
-          <li>
-            <a href="#!">Link 3</a>
-          </li>
-          <li>
-            <a href="#!">Link 4</a>
-          </li>
-        </ul>
-
-      </div>
-      <!-- Grid column -->
-
-    </div>
-    <!-- Grid row -->
-
-  </div>
-  <!-- Footer Links -->
-
-  <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">© 2018 Copyright:
-
-  </div>
-  <!-- Copyright -->
-
+  <p>Copyright 2018. </p>
 </footer>
 <!-- Footer -->
+
 </body>
 </html>
 

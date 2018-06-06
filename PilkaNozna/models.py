@@ -6,6 +6,12 @@ from datetime import datetime
 from django.db import models
 
 # Create your models here.
+class Email(models.Model):
+    imie = models.CharField(max_length=25)
+    email = models.EmailField()
+    temat = models.CharField(max_length=100)
+    tresc = models.CharField(max_length=500)
+
 class Liga(models.Model):
     id_ligi = models.AutoField(primary_key = True)
     nazwa_ligi = models.TextField()

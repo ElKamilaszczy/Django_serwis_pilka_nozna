@@ -1,5 +1,5 @@
 from django import forms
-from .models import Liga, Klub, Pilkarz, Mecz, Statystyki_gracza
+from .models import Liga, Klub, Pilkarz, Mecz, Statystyki_gracza, Email
 from django.core.validators import RegexValidator, MinValueValidator
 import datetime
 class LigaForm(forms.ModelForm):
@@ -90,7 +90,7 @@ class PilkarzForm(forms.ModelForm):
         widgets = {
             'imie': forms.TextInput(attrs={'style': 'width:250px', 'pattern':'[a-zA-Z]+', 'title':'Imie może zawierać tylko litery.'}),
             'nazwisko': forms.TextInput(attrs={'style': 'width:250px', 'pattern':'[a-zA-Z]+', 'title':'Nazwisko może zawierać tylko litery.'}),
-            'data_urodzenia':  forms.DateInput(attrs={'type': 'date', 'title': 'Podaj lub wybierz datę.'}),
+            'data_urodzenia': forms.DateInput(attrs={'type': 'date', 'title': 'Podaj lub wybierz datę.'}),
         }
     #Walidacja danych wejściowych#
     def clean_data_urodzenia(self):
@@ -108,6 +108,18 @@ class PilkarzForm(forms.ModelForm):
         if nazwiskoo != nazwiskoo.capitalize():
             raise forms.ValidationError('Nazwisko musi zaczynać się od wielkiej litery.')
         return nazwiskoo
+
+from django.core.validators import validate_email
+from django.core.validators import ValidationError
+class EmailForm(forms.ModelForm):
+    temat = forms.CharField()
+    tresc = forms.CharField(widget = forms.Textarea)
+    class Meta:
+        model = Email
+        fields = ('temat', 'tresc',)
+        widgets = {
+           'temat': forms.TextInput(attrs = {'style': 'width:250px'}),
+        }
 #Formularz logowania dla organizatorów
 class LoginForm(forms.Form):
     login = forms.CharField()

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
 #Import formularza logowania
-from .forms import LoginForm, LigaForm, KlubForm, MeczForm, StatystykiForm, PilkarzForm
+from .forms import LoginForm, LigaForm, KlubForm, MeczForm, StatystykiForm, PilkarzForm, EmailForm
 #Import mechanizmów uwierzytelniania i umieszczenia w sesji (login)
 #Dla zalogowanego:
 from django.contrib.auth.decorators import login_required
@@ -311,30 +311,6 @@ def klub(request,id_ligi,id_klubu):
     context = {'lg': lg, 'kl':kl, 'abc':abc, 'a':a, 'pilkarz_staty': pilkarz_staty, 'pilkarz': pilkarz}
     return render(request, 'PilkaNozna/klub.html', context)
 
-
-
-'''Widok dla formularza logowania organizatora/użytkownika'''
-'''
-def user_login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(login = cd['login'], hasło = cd['hasło'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return render(request, 'Pilkanozna/base.html')
-                else:
-                    return HttpResponse('Konto jest zablokowane')
-            else:
-                return HttpResponse('Nieprawidłowe dane logowania')
-    else:
-        form = LoginForm()
-    context = {'form': form}
-    return render(request, 'PilkaNozna/login.html', context)
-'''
-
 '''
 WIDOKI DLA FORMULARZY
 '''
@@ -411,6 +387,7 @@ def dodaj_pilkarza(request):
     context = {'form': form, 'wsk': wsk}
     return render(request, 'PilkaNozna/panel.html', context)
 
+
 @login_required
 def dodaj_lige(request):
     wsk = 5
@@ -424,3 +401,22 @@ def dodaj_lige(request):
         form = LigaForm()
     context = {'form': form, 'wsk': wsk}
     return render(request, 'PilkaNozna/panel.html', context)
+from django.core.mail import send_mail
+from django.conf import settings
+@login_required
+def wyslij_wiadomosc(request):
+    if request.method == 'POST':
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            emailek = form.save()
+            temat = request.POST.get('temat', '')
+            tresc = request.POST.get('tresc', '')
+            username = request.user.username
+            if temat and tresc:
+                send_mail('Uzytkownik: '+username +': temat: '+temat, tresc, settings.EMAIL_HOST_USER, ['kamyylek19@gmail.com'])
+            messages.success(request, 'Pomyślnie wysłano wiadomość.')
+
+            return render(request, 'PilkaNozna/panel.html')
+    else:
+        form = EmailForm()
+    return render(request, 'PilkaNozna/email.html', {'form': form})

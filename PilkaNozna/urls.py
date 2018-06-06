@@ -22,4 +22,5 @@ urlpatterns = (
     path('panel/dodaj_statystyki/', views.dodaj_statystyki, name = 'dodaj_statystyki'),
     path('panel/dodaj_pilkarza/', views.dodaj_pilkarza, name = 'dodaj_pilkarza'),
     path('panel/dodaj_lige/', views.dodaj_lige, name = 'dodaj_lige'),
+    path('panel/wyslij_wiadomosc/', views.wyslij_wiadomosc, name='wyslij_wiadomosc'),
 )

@@ -85,6 +85,8 @@
   </table>
 {%endif%}
 {%if wsk == 2%}
+{%if mecze%}
+
 {%for a in range%}
 <table class="table table-hover">
     <thead class="thead-dark">
@@ -119,7 +121,7 @@
 
 </table>
     {%endfor%}
-
+    {%endif%}
 
 
 
@@ -278,5 +280,5 @@
   </div>
 </div>
 {%endfor%}
-{%endif%}
+{% endif %}
 {% endblock %}
