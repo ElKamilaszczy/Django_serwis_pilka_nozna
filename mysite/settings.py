@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'PilkaNozna.apps.PilkanoznaConfig',
     'django.contrib.admin',
+    #'mapwidgets'
     #'sorting_bootstrap'#
 ]
 
@@ -143,3 +144,14 @@ EMAIL_HOST_USER = 'sampleemaildjango1234@gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = 'elAdmino1234'
+
+#Widget mapy
+'''
+MAP_WIDGETS = {
+    "GooglePointFieldWidget": (
+        ("zoom", 15),
+        ("mapCenterLocation", [57.7177013, -16.6300491]),
+    ),
+    "GOOGLE_MAP_API_KEY": "<google-map-api-key>"
+}
+'''

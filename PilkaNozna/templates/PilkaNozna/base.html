@@ -100,8 +100,11 @@
   font-weight: 400;
   text-align:
 }
-
-
+/*Formularz StatystykiForm  */
+#id_gole, #id_asysty, #id_faule{
+  width: 200px;
+  height: 30px;
+}
     /* Remove the navbar's default margin-bottom and rounded borders */
     .navbar {
       margin-bottom: 0;
@@ -112,6 +115,8 @@
     footer {
       background-color: #f2f2f2;
       padding: 25px;
+      position: fixed;
+      width: 100%;
     }
 
   .carousel-inner img {
@@ -153,7 +158,6 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if request.user.is_authenticated %}
-        Witaj, {{request.user.first_name}}
         <li><a href = "{%url 'logout' %}">Wyloguj</a></li>
         {% else %}
         <li><a href="{%url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Logowanie dla organizatorów</a></li>

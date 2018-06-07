@@ -88,7 +88,7 @@ class PilkarzForm(forms.ModelForm):
         model = Pilkarz
         fields = ('id_klubu', 'imie', 'nazwisko', 'data_urodzenia', 'id_pozycji',)
         widgets = {
-            'imie': forms.TextInput(attrs={'style': 'width:250px', 'pattern':'[a-zA-Z]+', 'title':'Imie może zawierać tylko litery.'}),
+            'imie': forms.TextInput(attrs={'style': 'width:250px', 'pattern':'[a-zA-Z]+', 'title':'Imie może zawierać tylko litery.', 'verbose_name':'Imię'}),
             'nazwisko': forms.TextInput(attrs={'style': 'width:250px', 'pattern':'[a-zA-Z]+', 'title':'Nazwisko może zawierać tylko litery.'}),
             'data_urodzenia': forms.DateInput(attrs={'type': 'date', 'title': 'Podaj lub wybierz datę.'}),
         }
@@ -124,3 +124,17 @@ class EmailForm(forms.ModelForm):
 class LoginForm(forms.Form):
     login = forms.CharField()
     hasło = forms.CharField(widget=forms.PasswordInput)
+
+#Mapa
+'''
+from mapwidgets.widgets import GooglePointFieldWidget
+
+class CityAdminForm(forms.ModelForm):
+    class Meta:
+        model = Miasto
+        fields = ("coordinates", "city_hall")
+        widgets = {
+            'coordinates': GooglePointFieldWidget,
+            'city_hall': GooglePointFieldWidget,
+        }
+'''

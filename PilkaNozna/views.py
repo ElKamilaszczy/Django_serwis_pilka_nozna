@@ -9,9 +9,8 @@ from django.contrib.auth.decorators import login_required
 #Komunikaty
 from django.contrib import messages
 def ligi(request):
-    latest_question = Liga.objects.order_by('nazwa_ligi')
-
-    context = {'latest_question': latest_question}
+    ligi = Liga.objects.order_by('nazwa_ligi')
+    context = {'ligi': ligi}
     return render(request, 'PilkaNozna/index.html', context)
 
 def gole(id_meczu,id_klubu):
