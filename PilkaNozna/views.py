@@ -419,3 +419,7 @@ def wyslij_wiadomosc(request):
     else:
         form = EmailForm()
     return render(request, 'PilkaNozna/email.html', {'form': form})
+
+#Obsługa 404
+def error404(request):
+    return render(request,'PilkaNozna/error404.html', status=404)

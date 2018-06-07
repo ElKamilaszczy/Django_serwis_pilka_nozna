@@ -1,5 +1,4 @@
 from django.urls import path
-from django.conf.urls import url
 from . import views
 from django.contrib.auth.views import logout, login, logout_then_login
 urlpatterns = (
@@ -23,4 +22,6 @@ urlpatterns = (
     path('panel/dodaj_pilkarza/', views.dodaj_pilkarza, name = 'dodaj_pilkarza'),
     path('panel/dodaj_lige/', views.dodaj_lige, name = 'dodaj_lige'),
     path('panel/wyslij_wiadomosc/', views.wyslij_wiadomosc, name='wyslij_wiadomosc'),
+    path('blad/', views.error404, name='error404'),
 )
+
