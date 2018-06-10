@@ -421,11 +421,12 @@ def wyslij_wiadomosc(request):
     return render(request, 'PilkaNozna/email.html', {'form': form})
 
 #Obsługa 404
-def error_404(request):
+#Argumenty exception muszą łapać wyjątek btaku strony
+def error_404(request, exception):
     data = {}
     return render(request, 'PilkaNozna/404.html', data)
 
 
-def error_500(request):
+def error_500(request, exception):
     data = {}
     return render(request, 'PilkaNozna/500.html', data)

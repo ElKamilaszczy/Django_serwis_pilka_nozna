@@ -24,7 +24,4 @@ urlpatterns = (
     path('panel/dodaj_lige/', views.dodaj_lige, name = 'dodaj_lige'),
     path('panel/wyslij_wiadomosc/', views.wyslij_wiadomosc, name='wyslij_wiadomosc'),
 
-
-
 )
-

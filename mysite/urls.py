@@ -27,8 +27,7 @@ urlpatterns = [
     #path('registration/', include('registration.urls')),
     #url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT})
 ]
-#handler404 = 'mysite.views.not_found'
-#urlpatterns += staticfiles_urlpatterns()
+
 
 handler404 = myapp_views.error_404
 handler500 = myapp_views.error_500
