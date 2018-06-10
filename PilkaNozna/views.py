@@ -421,7 +421,11 @@ def wyslij_wiadomosc(request):
     return render(request, 'PilkaNozna/email.html', {'form': form})
 
 #Obsługa 404
-def not_found(request):
-    return render(request,'PilkaNozna/404.html', status=404)
-def server_error(request):
-    return render(request, 'PilkaNozna/500.html', status=500)
+def error_404(request):
+    data = {}
+    return render(request, 'PilkaNozna/404.html', data)
+
+
+def error_500(request):
+    data = {}
+    return render(request, 'PilkaNozna/500.html', data)

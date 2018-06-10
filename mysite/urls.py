@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.static import serve
 from django.conf import settings
+from PilkaNozna import views as myapp_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,3 +30,5 @@ urlpatterns = [
 #handler404 = 'mysite.views.not_found'
 #urlpatterns += staticfiles_urlpatterns()
 
+handler404 = myapp_views.error_404
+handler500 = myapp_views.error_500
