@@ -427,6 +427,6 @@ def error_404(request, exception):
     return render(request, 'PilkaNozna/404.html', data)
 
 
-def error_500(request, exception):
+def error_500(request):
     data = {}
     return render(request, 'PilkaNozna/500.html', data)
