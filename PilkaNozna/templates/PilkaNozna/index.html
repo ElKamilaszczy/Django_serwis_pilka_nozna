@@ -1,9 +1,36 @@
 {% extends 'PilkaNozna/base.html' %}
+{% load app_filters %}
 {% block content %}
-Witamy w miejscu, gdzie każdy fan piłki nożnej znajdzie coś dla siebie! Nieważne,
+<h4>Witamy w miejscu, gdzie każdy fan piłki nożnej znajdzie coś dla siebie! Nieważne,
 czy jesteś niedzielnym fanem, czy też zagorzałym -
 wszystkie informacje są w zasiegu Twojej ręki.
-<h1>Wybierz ligę</h1><br>
+</h4>
+<div class="ligi">
+  <table class="table table-hover">
+  <center>
+    <thead>
+      <tr>
+        <th><center>Spis lig</center></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for l in ligi %}
+      <tr>
+        <td>
+          <center>
+            <a href = "{% url 'tabela' l.id_ligi%}">
+            {{forloop.counter0|another_filter:1|custom_filter:abc}}
+            </a>
+          </center>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </center>
+  </table>
+
+</div>
+<!--
 <div class="row">
     <div class="col-sm-4">
         <a href="{% url 'tabela' 1 %}">
@@ -29,4 +56,5 @@ wszystkie informacje są w zasiegu Twojej ręki.
     </div>
 
     </div>
+!-->
 {% endblock %}

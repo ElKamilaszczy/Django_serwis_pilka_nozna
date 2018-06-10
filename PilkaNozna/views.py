@@ -6,11 +6,18 @@ from .forms import LoginForm, LigaForm, KlubForm, MeczForm, StatystykiForm, Pilk
 #Import mechanizmów uwierzytelniania i umieszczenia w sesji (login)
 #Dla zalogowanego:
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, Http404
 #Komunikaty
 from django.contrib import messages
 def ligi(request):
-    ligi = Liga.objects.order_by('nazwa_ligi')
-    context = {'ligi': ligi}
+    abc = [[0 for j in range(100)] for i in range(100)]
+    ligi = Liga.objects.all().order_by('nazwa_ligi')
+    var = 0
+    for l in ligi:
+        abc[var][0] = l.id_ligi
+        abc[var][1] = l.nazwa_ligi
+        var = var + 1
+    context = {'ligi': ligi, 'abc': abc}
     return render(request, 'PilkaNozna/index.html', context)
 
 def gole(id_meczu,id_klubu):
@@ -185,8 +192,11 @@ def kolejki(request,id_ligi):
             for b in range(a.gole):
                 gol[var]=a
                 var+=1
-
-    mecze = Mecz.objects.filter(id_klubu1__in=id).order_by('-kolejka','-data_meczu')
+    try:
+        mecz = Mecz.objects.get(id_klubu1__in=id)
+    except Mecz.DoesNotExist:
+        raise Http404("Chwilowo nie ma żadnych meczy ligowych.")
+    mecze = Mecz.objects.filter(id_klubu1__in=id).order_by('-kolejka', '-data_meczu')
     kol=mecze[0].kolejka
     var = 1
     abc = [[0 for j in range(2)] for i in range(1000)]
