@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
 #Import formularza logowania
@@ -421,5 +421,7 @@ def wyslij_wiadomosc(request):
     return render(request, 'PilkaNozna/email.html', {'form': form})
 
 #Obsługa 404
-def error404(request):
-    return render(request,'PilkaNozna/error404.html', status=404)
+def not_found(request):
+    return render(request,'PilkaNozna/404.html', status=404)
+def server_error(request):
+    return render(request, 'PilkaNozna/500.html', status=500)

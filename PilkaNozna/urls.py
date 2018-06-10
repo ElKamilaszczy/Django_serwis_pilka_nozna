@@ -3,8 +3,9 @@ from . import views
 from django.contrib.auth.views import logout, login, logout_then_login
 urlpatterns = (
     path('', views.ligi, name='ligi'),
+    path('not_found/', views.not_found, name='not_found'),
+    path('server_error/', views.server_error, name='server_error'),
     path('<int:id_ligi>/tabela', views.tabela, name='tabela'),
-    #path('panel/nowa_liga/', views.dodaj_lige, name='dodaj_lige'),
     path('<int:id_ligi>/ranking', views.ranking_st, name='ranking_st'),
     path('<int:id_ligi>/kolejki', views.kolejki, name='kolejki'),
     path('<int:id_ligi>/<int:id_klubu>', views.klub, name='klub'),
@@ -22,6 +23,6 @@ urlpatterns = (
     path('panel/dodaj_pilkarza/', views.dodaj_pilkarza, name = 'dodaj_pilkarza'),
     path('panel/dodaj_lige/', views.dodaj_lige, name = 'dodaj_lige'),
     path('panel/wyslij_wiadomosc/', views.wyslij_wiadomosc, name='wyslij_wiadomosc'),
-    path('blad/', views.error404, name='error404'),
+
 )
 

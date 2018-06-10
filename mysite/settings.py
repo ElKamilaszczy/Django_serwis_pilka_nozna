@@ -24,18 +24,37 @@ SECRET_KEY = '5s#3+6w6f)jgs3p=rl+#qk!9t5b(&r+163y4jb53&^bdtxaut0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+
 ALLOWED_HOSTS = ['*']
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 # Application definition
 
 INSTALLED_APPS = [
+    'PilkaNozna.apps.PilkanoznaConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'PilkaNozna.apps.PilkanoznaConfig',
     'django.contrib.admin',
     #'mapwidgets'
     #'sorting_bootstrap'#
