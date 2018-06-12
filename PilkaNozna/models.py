@@ -9,8 +9,8 @@ from django.db import models
 class Email(models.Model):
     imie = models.CharField(max_length=25)
     email = models.EmailField()
-    temat = models.CharField(max_length=100)
-    tresc = models.CharField(max_length=500)
+    temat = models.CharField(max_length=100, verbose_name="Temat")
+    tresc = models.CharField(max_length=500, verbose_name="Treść")
 
 class Liga(models.Model):
     id_ligi = models.AutoField(primary_key = True, verbose_name="Liga")

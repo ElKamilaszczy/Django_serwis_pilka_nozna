@@ -3,14 +3,11 @@ from . import views
 from django.contrib.auth.views import logout, login, logout_then_login
 urlpatterns = (
     path('', views.ligi, name='ligi'),
-    #path('not_found/', views.not_found, name='not_found'),
-    #path('server_error/', views.server_error, name='server_error'),
-    path('<int:id_ligi>/tabela', views.tabela, name='tabela'),
-    path('<int:id_ligi>/ranking', views.ranking_st, name='ranking_st'),
-    path('<int:id_ligi>/kolejki', views.kolejki, name='kolejki'),
-    path('<int:id_ligi>/<int:id_klubu>', views.klub, name='klub'),
-    #wzorzec url dla logowania i dodanie w urls.py admina
-    #path('login/', views.user_login, name='login'),
+    path('<int:id_ligi>/', views.liga, name='liga'),
+    path('<int:id_ligi>/tabela/', views.tabela, name='tabela'),
+    path('<int:id_ligi>/ranking/', views.ranking_st, name='ranking_st'),
+    path('<int:id_ligi>/kolejki/', views.kolejki, name='kolejki'),
+    path('<int:id_ligi>/<int:id_klubu>/', views.klub, name='klub'),
     #Wzorce adresów URL dla widoków logowania i wylogowania
     path('login/', login, name='login'),
     path('logout/', logout, name='logout'),

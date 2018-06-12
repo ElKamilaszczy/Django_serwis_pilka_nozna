@@ -7,6 +7,7 @@
 
   <table style="width:100%" >
   <tr >
+
     <td align="center" > <a href="{% url 'tabela' lg.id_ligi %}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Tabela wyników</h3></button></a> </td>
     <td align="center"><a href="{% url 'ranking_st' lg.id_ligi %}">
@@ -14,10 +15,12 @@
     <td align="center"><a href="{% url 'kolejki' lg.id_ligi %}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Mecze ligowe</h3></button></a></td>
   </tr>
-
 </table>
 <br> <br>
 {% if wsk == 0 %}
+{% if not kl %}
+<h3>Brak drużyn w lidze</h3>
+{% else %}
     <table class="table table-hover">
         <thead class="thead-dark">
           <tr class="table-dark text-dark">
@@ -41,7 +44,7 @@
 
 
 
-            <td><a href="{% url 'klub' lg.id_ligi forloop.counter0|another_filter:9|custom_filter:abc%}">
+            <td><a href="{% url 'klub' lg.id_ligi forloop.counter0|another_filter:9|custom_filter:abc %}">
                    {{forloop.counter0|another_filter:1|custom_filter:abc}}</a></td>
 
 
@@ -59,7 +62,11 @@
     </tbody>
       </table>
 {%endif%}
+{%endif%}
 {%if wsk == 1%}
+{% if not kl %}
+<h3>Brak strzelców bramek w lidze</h3>
+{% else %}
 <table class="table table-hover">
     <thead class="thead-dark">
       <tr class="table-dark text-dark">
@@ -84,15 +91,15 @@
     </tbody>
   </table>
 {%endif%}
+{%endif%}
 {%if wsk == 2%}
-{%if mecze%}
+{% if not kl%}
+<h3>Brak meczów w lidze</h3>
+{% else %}
 
-{%for a in range%}
+{%for a in liczba_kolejek|ile_razy2%}
 <table class="table table-hover">
     <thead class="thead-dark">
-
-
-
     <tr class="table-dark text-dark">
           <th><h2>Kolejka {{a}}</h2></th>
 <tbody>
@@ -164,10 +171,11 @@
                   <td>
                       {%for b in statystyki%}
                       {%if b.zolta != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu1.id_klubu%}
-                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
-                      {%if b.zolta == 2%}
-                                            <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
-                        {%endif%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}
+                      {%if b.zolta > 1%}
+                                x {{b.zolta}}
+                          {%endif%}
+                      </h6>
                       {%endif%}
                       {%endfor%}
                   </td>
@@ -175,10 +183,11 @@
                   <td>
                       {%for b in statystyki%}
                       {%if b.zolta != 0 and b.id_meczu.id_meczu == a.id_meczu and b.id_pilkarza.id_klubu.id_klubu == a.id_klubu2.id_klubu%}
-                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
-                      {%if b.zolta == 2%}
-                                            <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}</h6>
-                        {%endif%}
+                      <h6>{{b.id_pilkarza.imie}} {{b.id_pilkarza.nazwisko}}
+                        {%if b.zolta > 1%}
+                                x {{b.zolta}}
+                          {%endif%}
+                      </h6>
                       {%endif%}
                       {%endfor%}
                   </td>

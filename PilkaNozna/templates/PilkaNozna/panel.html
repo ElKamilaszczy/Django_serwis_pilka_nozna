@@ -2,6 +2,8 @@
 {% load app_filters %}
 {% block title %} Panel główny {% endblock %}
 {% block content %}
+<br>
+<h3>Panel dla organizatorów.</h3>
 <br><br>
 <div>
     {% if messages %}
@@ -21,15 +23,16 @@
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj klub</h3></button></a> </td>
      <td align="center"><a href="{% url 'dodaj_mecz' %}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj mecz</h3></button></a></td>
-     <td align="center"><a href="{% url 'dodaj_statystyki'%}">
+     <td align="center"><a href="{% url 'dodaj_statystyki' %}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj statystyki gracza</h3></button></a></td>
-     <td align="center"><a href="{% url 'dodaj_pilkarza'%}">
+     <td align="center"><a href="{% url 'dodaj_pilkarza' %}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj zawodnika do klubu</h3></button></a></td>
-      <td align="center"><a href="{% url 'dodaj_lige'%}">
+      <td align="center"><a href="{% url 'dodaj_lige' %}">
         <button type="button" class="btn btn-primary btn-md"> <h3>Dodaj ligę</h3></button></a></td>
   </tr>
 
 </table><br>
+<br><br>
 {% if wsk == 1 %}
 {% if request.user.is_authenticated %}
 <h1>Formularz dodawania klubu</h1>

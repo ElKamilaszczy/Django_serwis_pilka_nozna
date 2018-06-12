@@ -2,7 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from .models import Liga,Klub,Mecz,Pilkarz,Statystyki_gracza
 #Import formularza logowania
-from .forms import LoginForm, LigaForm, KlubForm, MeczForm, StatystykiForm, PilkarzForm, EmailForm
+from .forms import  LigaForm, KlubForm, MeczForm, StatystykiForm, PilkarzForm, EmailForm
 #Import mechanizmów uwierzytelniania i umieszczenia w sesji (login)
 #Dla zalogowanego:
 from django.contrib.auth.decorators import login_required
@@ -19,6 +19,11 @@ def ligi(request):
         var = var + 1
     context = {'ligi': ligi, 'abc': abc}
     return render(request, 'PilkaNozna/index.html', context)
+
+def liga(request, id_ligi):
+    liga = Liga.objects.get(id_ligi = id_ligi)
+    context = {'lg': liga}
+    return render(request, 'PilkaNozna/detail.html', context)
 
 def gole(id_meczu,id_klubu):
     pilkarz = Pilkarz.objects.filter(id_klubu=id_klubu)
@@ -51,13 +56,12 @@ def gole(id_meczu,id_klubu):
 def tabela(request, id_ligi):
     wsk = 0;
     lg = Liga.objects.get(id_ligi=id_ligi)
-    kl = Klub.objects.filter(id_ligi=id_ligi)
+    kl = Klub.objects.filter(id_ligi=lg)
     abc = [[0 for j in range(100)] for i in range(100)]
     id = [0 for j in range(100)]
     var = 0
     #pomoc = 0
     for a in kl:
-
         mecz = Mecz.objects.filter(id_klubu1=a.id_klubu) | Mecz.objects.filter(id_klubu2=a.id_klubu)
         for b in range (10):
             if b==0:
@@ -121,7 +125,7 @@ def tabela(request, id_ligi):
             miejsce += 1
 
         pomocnicza += 1
-    request.session['tablica_wynikow'] = abc
+    #request.session['tablica_wynikow'] = abc
     context = {'lg': lg, 'kl': kl, 'abc': abc, 'wsk': wsk, 'id': id}
     return render(request, 'PilkaNozna/detail.html', context)
 
@@ -171,13 +175,13 @@ def ranking_st(request, id_ligi):
 
         pomocnicza += 1
 
-    context = {'lg': lg, 'pilkarz': pilkarz, 'abc': abc, 'wsk': wsk, 'var': var}
+    context = {'lg': lg,'kl':kl, 'pilkarz': pilkarz, 'abc': abc, 'wsk': wsk, 'var': var}
     return render(request, 'PilkaNozna/detail.html', context)
 
 def kolejki(request,id_ligi):
     wsk=2
     lg = Liga.objects.get(id_ligi=id_ligi)
-    kl = Klub.objects.filter(id_ligi=id_ligi)
+    kl = Klub.objects.filter(id_ligi=lg)
     id = [0 for j in range(100)]
     var = 0
     for a in kl:
@@ -192,12 +196,9 @@ def kolejki(request,id_ligi):
             for b in range(a.gole):
                 gol[var]=a
                 var+=1
-    try:
-        mecz = Mecz.objects.get(id_klubu1__in=id)
-    except Mecz.DoesNotExist:
-        raise Http404("Chwilowo nie ma żadnych meczy ligowych.")
+    from django.db.models import Max
     mecze = Mecz.objects.filter(id_klubu1__in=id).order_by('-kolejka', '-data_meczu')
-    kol=mecze[0].kolejka
+    liczba_kolejek = Mecz.objects.all().aggregate(Max('kolejka'))['kolejka__max']
     var = 1
     abc = [[0 for j in range(2)] for i in range(1000)]
     for a in mecze:
@@ -205,7 +206,7 @@ def kolejki(request,id_ligi):
         abc[var][1] = gole(a.id_meczu, a.id_klubu1.id_klubu)[1]
         var+=1
 
-    context = {'wsk': wsk,'lg': lg,'mecze':mecze,'range':range(kol,0,-1),'abc':abc,'gol':gol,'statystyki':statystyki}
+    context = {'wsk': wsk,'lg': lg, 'kl':kl, 'mecze':mecze,'liczba_kolejek':liczba_kolejek,'abc':abc,'gol':gol,'statystyki':statystyki}
     return render(request, 'PilkaNozna/detail.html', context)
 
 def klub(request,id_ligi,id_klubu):
@@ -410,6 +411,7 @@ def dodaj_lige(request):
         form = LigaForm()
     context = {'form': form, 'wsk': wsk}
     return render(request, 'PilkaNozna/panel.html', context)
+
 from django.core.mail import send_mail
 from django.conf import settings
 @login_required
@@ -431,7 +433,7 @@ def wyslij_wiadomosc(request):
     return render(request, 'PilkaNozna/email.html', {'form': form})
 
 #Obsługa 404
-#Argumenty exception muszą łapać wyjątek btaku strony
+#Argument exception muszą łapać wyjątek btaku strony
 def error_404(request, exception):
     data = {}
     return render(request, 'PilkaNozna/404.html', data)

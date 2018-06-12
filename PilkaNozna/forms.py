@@ -9,6 +9,13 @@ class LigaForm(forms.ModelForm):
         widgets = {
             'nazwa_ligi': forms.TextInput(attrs = {'style': 'width:250px', 'title': 'Podaj nazwę ligi.'}),
         }
+    def clean_nazwa_ligi(self):
+        nazwa = self.cleaned_data['nazwa_ligi']
+        nazwy_lig = Liga.objects.all()
+        for n in nazwy_lig:
+            if n.nazwa_ligi == nazwa:
+                raise forms.ValidationError("Nazwa jest już zajęta.")
+        return nazwa
 
 class KlubForm(forms.ModelForm):
     nazwa_klubu = forms.TextInput()
@@ -18,11 +25,17 @@ class KlubForm(forms.ModelForm):
         widgets = {
             'nazwa_klubu': forms.TextInput(attrs = {'style': 'width:250px', 'title': 'Podaj nazwę klubu.'}),
         }
-    def clean_nazwa_klubu(self):
-        klub = self.cleaned_data(['nazwa_klubu'])
+    def clean(self):
+        cleaned_data = super().clean()
+        klub = cleaned_data.get("nazwa_klubu")
+        liga = cleaned_data.get("id_ligi")
+        kluby = Klub.objects.filter(id_ligi = liga)
+        for k in kluby:
+            if klub == k.nazwa_klubu:
+                raise forms.ValidationError("W tej lidze istnieje już klub o tej samej nazwie")
         if klub != klub.capitalize():
             raise forms.ValidationError('Nazwa klubu musi rozpoczynać się od wielkiej litery.')
-        return klub
+        return cleaned_data
 
 class MeczForm(forms.ModelForm):
     class Meta:
@@ -38,8 +51,10 @@ class MeczForm(forms.ModelForm):
         return kolejkaa
     def clean_data_meczu(self):
         data = self.cleaned_data['data_meczu']
-        if data > datetime.date.today():
-            raise forms.ValidationError('Niepoprawna data! Podaj poprawna datę meczu.')
+        if data > datetime.date.today() + datetime.timedelta(days=(21)):
+            raise forms.ValidationError('Nie można wprowadzić daty meczu ponad 21 dni naprzód od aktualnej daty.')
+        if data < datetime.date.today() - datetime.timedelta(days=(21)):
+            raise forms.ValidationError('Nie można wprowadzić daty meczu ponad 21 dni wcześniej od aktualnej daty.')
         return data
 
     def clean(self):
@@ -50,6 +65,8 @@ class MeczForm(forms.ModelForm):
         kl2 = Klub.objects.all().get(id_klubu = id_klubu2.id_klubu)
         if kl1.id_ligi != kl2.id_ligi:
             raise forms.ValidationError('Drużyny z innych lig nie mogą rozgrywać ze sobą meczów.')
+        if id_klubu1.id_klubu == id_klubu2.id_klubu:
+            raise forms.ValidationError('Błąd - 2 takie same drużyny.')
         return cleaned_data
 
 class StatystykiForm(forms.ModelForm):
@@ -97,6 +114,8 @@ class PilkarzForm(forms.ModelForm):
         data = self.cleaned_data['data_urodzenia']
         if data > datetime.date.today() - datetime.timedelta(days=(15 * 365.24)):
             raise forms.ValidationError('Niepoprawna data! Zawodnik musi mieć co najmniej 16 lat')
+        if data < datetime.date.today() - datetime.timedelta(days=(80 * 365.24)):
+            raise forms.ValidationError('Piłkarz za stary.')
         return data
     def clean_imie(self):
         imiee = self.cleaned_data['imie']
@@ -112,20 +131,19 @@ class PilkarzForm(forms.ModelForm):
 from django.core.validators import validate_email
 from django.core.validators import ValidationError
 class EmailForm(forms.ModelForm):
-    temat = forms.CharField()
-    tresc = forms.CharField(widget = forms.Textarea)
     class Meta:
         model = Email
         fields = ('temat', 'tresc',)
         widgets = {
-           'temat': forms.TextInput(attrs = {'style': 'width:250px'}),
+           'temat': forms.TextInput(attrs = {'style': 'width:250px','title':'Imie może zawierać tylko litery.'}),
+            'tresc': forms.Textarea(),
         }
-#Formularz logowania dla organizatorów
-class LoginForm(forms.Form):
-    login = forms.CharField()
-    hasło = forms.CharField(widget=forms.PasswordInput)
-
-#Mapa
+        def clean_temat(self):
+            temat = self.cleaned_data['temat']
+            print(temat)
+            if temat is None:
+                raise forms.ValidationError('Podaj temat')
+            return temat
 '''
 from mapwidgets.widgets import GooglePointFieldWidget
 

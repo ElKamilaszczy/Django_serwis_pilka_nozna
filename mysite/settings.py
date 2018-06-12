@@ -26,7 +26,7 @@ SECRET_KEY = '5s#3+6w6f)jgs3p=rl+#qk!9t5b(&r+163y4jb53&^bdtxaut0'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+'''
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -45,7 +45,7 @@ LOGGING = {
         },
     },
 }
-
+'''
 # Application definition
 
 INSTALLED_APPS = [
