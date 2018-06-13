@@ -28,8 +28,14 @@ class KlubForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         klub = cleaned_data.get("nazwa_klubu")
+        print(klub)
+        print(type(klub))
         liga = cleaned_data.get("id_ligi")
         kluby = Klub.objects.filter(id_ligi = liga)
+        if not klub:
+            raise forms.ValidationError("Pola wymagane")
+        if not liga:
+            raise forms.ValidationError("Pole wymagane")
         for k in kluby:
             if klub == k.nazwa_klubu:
                 raise forms.ValidationError("W tej lidze istnieje już klub o tej samej nazwie")
@@ -46,6 +52,7 @@ class MeczForm(forms.ModelForm):
         }
     def clean_kolejka(self):
         kolejkaa = self.cleaned_data['kolejka']
+
         if kolejkaa <= 0:
             raise forms.ValidationError('Numer kolejki musi być większy od 0')
         return kolejkaa

@@ -174,8 +174,7 @@ def ranking_st(request, id_ligi):
              miejsce += 1
 
         pomocnicza += 1
-
-    context = {'lg': lg,'kl':kl, 'pilkarz': pilkarz, 'abc': abc, 'wsk': wsk, 'var': var}
+    context = {'lg': lg,'kl':kl, 'pilkarz': pilkarz, 'abc': abc, 'pom':abc[0][3], 'wsk': wsk, 'var': var}
     return render(request, 'PilkaNozna/detail.html', context)
 
 def kolejki(request,id_ligi):
@@ -345,8 +344,10 @@ def dodaj_klub(request):
     wsk = 1
     if request.method == 'POST':
         form = KlubForm(request.POST)
+
         if form.is_valid():
             klub = form.save()
+            messages.success(request, 'Pomyślnie dodano klub.')
             return render(request, 'PilkaNozna/panel.html')
 
     else:
