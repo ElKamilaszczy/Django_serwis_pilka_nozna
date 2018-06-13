@@ -197,7 +197,7 @@ def kolejki(request,id_ligi):
                 var+=1
     from django.db.models import Max
     mecze = Mecz.objects.filter(id_klubu1__in=id).order_by('-kolejka', '-data_meczu')
-    liczba_kolejek = Mecz.objects.all().aggregate(Max('kolejka'))['kolejka__max']
+    liczba_kolejek = Mecz.objects.filter(id_klubu1__in=id).order_by('-kolejka', '-data_meczu').aggregate(Max('kolejka'))['kolejka__max']
     var = 1
     abc = [[0 for j in range(2)] for i in range(1000)]
     for a in mecze:
@@ -316,7 +316,7 @@ def klub(request,id_ligi,id_klubu):
             if b == 9:
                 pilkarz_staty[var][b] = p.id_pozycji.nazwa_pozycji
         var += 1
-
+    print(a.id_klubu)
     context = {'lg': lg, 'kl':kl, 'abc':abc, 'a':a, 'pilkarz_staty': pilkarz_staty, 'pilkarz': pilkarz}
     return render(request, 'PilkaNozna/klub.html', context)
 
@@ -413,21 +413,23 @@ def dodaj_lige(request):
     context = {'form': form, 'wsk': wsk}
     return render(request, 'PilkaNozna/panel.html', context)
 
-from django.core.mail import send_mail
+from django.core.mail import send_mail, BadHeaderError
 from django.conf import settings
 @login_required
 def wyslij_wiadomosc(request):
     if request.method == 'POST':
         form = EmailForm(request.POST)
         if form.is_valid():
-            emailek = form.save()
-            temat = request.POST.get('temat', '')
-            tresc = request.POST.get('tresc', '')
-            username = request.user.username
-            if temat and tresc:
-                send_mail('Uzytkownik: '+username +': temat: '+temat, tresc, settings.EMAIL_HOST_USER, ['kamyylek19@gmail.com'])
-            messages.success(request, 'Pomyślnie wysłano wiadomość.')
-
+            try:
+                emailek = form.save()
+                temat = request.POST.get('temat', '')
+                tresc = request.POST.get('tresc', '')
+                username = request.user.username
+                if temat and tresc:
+                    send_mail('Uzytkownik: '+username +': temat: '+temat, tresc, settings.EMAIL_HOST_USER, ['kamyylek19@gmail.com'])
+                messages.success(request, 'Pomyślnie wysłano wiadomość.')
+            except BadHeaderError:
+                return HttpResponse("Błędny nagłówek")
             return render(request, 'PilkaNozna/panel.html')
     else:
         form = EmailForm()
@@ -443,3 +445,39 @@ def error_404(request, exception):
 def error_500(request):
     data = {}
     return render(request, 'PilkaNozna/500.html', data)
+
+
+#Widok dla PDF
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
+
+def pdf(request,id_ligi, id_klubu):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="listazawodnikow.pdf"'
+    pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
+    p = canvas.Canvas(response)
+    p.setFont('Arial', 9)
+    liga = Liga.objects.get(id_ligi = id_ligi)
+    klub = Klub.objects.get(id_ligi = liga, id_klubu = id_klubu)
+    pilkarz = Pilkarz.objects.filter(id_klubu=klub)
+
+    p.drawString(250, 830, "Lista zawodników klubu: " + str(klub))
+    p.drawString(100, 800, "Imie")
+    p.drawString(200, 800, "Nazwisko")
+    p.drawString(350, 800, "Data urodzenia")
+    p.drawString(450, 800, "Pozycja")
+    yy = 780
+    for b in pilkarz:
+        xx = 100
+        p.drawString(xx, yy, str(b.imie))
+        xx = xx + 100
+        p.drawString(xx, yy, str(b.nazwisko))
+        xx = xx + 150
+        p.drawString(xx, yy, str(b.data_urodzenia))
+        xx = xx + 100
+        p.drawString(xx, yy, str(b.id_pozycji))
+        yy = yy - 20
+    p.showPage()
+    p.save()
+    return response

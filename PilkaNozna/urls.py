@@ -8,6 +8,7 @@ urlpatterns = (
     path('<int:id_ligi>/ranking/', views.ranking_st, name='ranking_st'),
     path('<int:id_ligi>/kolejki/', views.kolejki, name='kolejki'),
     path('<int:id_ligi>/<int:id_klubu>/', views.klub, name='klub'),
+    path('<int:id_ligi>/<int:id_klubu>/pdf/', views.pdf, name='pdf'),
     #Wzorce adresów URL dla widoków logowania i wylogowania
     path('login/', login, name='login'),
     path('logout/', logout, name='logout'),
@@ -20,5 +21,4 @@ urlpatterns = (
     path('panel/dodaj_pilkarza/', views.dodaj_pilkarza, name = 'dodaj_pilkarza'),
     path('panel/dodaj_lige/', views.dodaj_lige, name = 'dodaj_lige'),
     path('panel/wyslij_wiadomosc/', views.wyslij_wiadomosc, name='wyslij_wiadomosc'),
-
 )
