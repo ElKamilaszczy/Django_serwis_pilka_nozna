@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '5s#3+6w6f)jgs3p=rl+#qk!9t5b(&r+163y4jb53&^bdtxaut0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['RozgrywkiPilkiNoznej.pythonanywhere.com']
 '''
 LOGGING = {
     'version': 1,
@@ -163,13 +163,3 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = 'elAdmino1234'
 
-#Widget mapy
-'''
-MAP_WIDGETS = {
-    "GooglePointFieldWidget": (
-        ("zoom", 15),
-        ("mapCenterLocation", [57.7177013, -16.6300491]),
-    ),
-    "GOOGLE_MAP_API_KEY": "<google-map-api-key>"
-}
-'''
