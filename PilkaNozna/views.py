@@ -114,9 +114,6 @@ def tabela(request, id_ligi):
                     abc[var][b] += temp[1]
             if b==9:
                 abc[var][b] = a.id_klubu
-        #id.insert(pomoc, a.id_klubu)
-        #pomoc += 1
-
         var += 1
 
     abc = sorted(abc, key=lambda x: x[3], reverse=True)
@@ -125,13 +122,11 @@ def tabela(request, id_ligi):
     for a in kl:
         if(abc[pomocnicza][3] == abc[pomocnicza+1][3]) and (abc[pomocnicza][7]-abc[pomocnicza][8]) == (abc[pomocnicza+1][7] - abc[pomocnicza+1][8]):
             abc[pomocnicza][0] = miejsce
-
         else:
             abc[pomocnicza][0] = miejsce
             miejsce += 1
 
         pomocnicza += 1
-    #request.session['tablica_wynikow'] = abc
     context = {'lg': lg, 'kl': kl, 'abc': abc, 'wsk': wsk, 'id': id}
     return render(request, 'PilkaNozna/detail.html', context)
 
