@@ -66,17 +66,13 @@ def tabela(request, id_ligi):
     abc = [[0 for j in range(100)] for i in range(100)]
     id = [0 for j in range(100)]
     var = 0
-    #pomoc = 0
     for a in kl:
         mecz = Mecz.objects.filter(id_klubu1=a.id_klubu) | Mecz.objects.filter(id_klubu2=a.id_klubu)
         for b in range (10):
             if b==0:
                 abc[var][b]=var
-
             if b==1:
                 abc[var][b]=a.nazwa_klubu
-                #id.insert(var,a.id_klubu)
-
             if b==2:
                 abc[var][b]=mecz.count()
             if b==3:

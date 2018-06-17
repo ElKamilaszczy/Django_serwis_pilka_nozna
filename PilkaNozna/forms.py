@@ -121,8 +121,8 @@ class PilkarzForm(forms.ModelForm):
         data = self.cleaned_data['data_urodzenia']
         if data > datetime.date.today() - datetime.timedelta(days=(15 * 365.24)):
             raise forms.ValidationError('Niepoprawna data! Zawodnik musi mieć co najmniej 16 lat')
-        if data < datetime.date.today() - datetime.timedelta(days=(80 * 365.24)):
-            raise forms.ValidationError('Piłkarz za stary.')
+        if data < datetime.date.today() - datetime.timedelta(days=(60 * 365.24)):
+            raise forms.ValidationError('Piłkarz musi mieć mniej niz 60 lat.')
         return data
     def clean_imie(self):
         imiee = self.cleaned_data['imie']
